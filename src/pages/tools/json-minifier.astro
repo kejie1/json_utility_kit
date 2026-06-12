@@ -1,0 +1,339 @@
+---
+import ToolLayout from "../../layouts/ToolLayout.astro";
+
+const faqs = [
+    {
+        question: "How does JSON minification save space?",
+        answer: "Minification removes all optional whitespaces, carriage returns, newlines, and tab characters from the JSON data. This compresses the data layout into a single dense line, reducing raw byte size.",
+    },
+    {
+        question: "Does minification alter my actual JSON data structures?",
+        answer: "No. Minification is lossless. It only eliminates extra spaces outside of string values. The keys, values, nesting, array items, and types are preserved exactly.",
+    },
+];
+
+const howToUseSteps = [
+    "Paste your formatted, readable JSON into the input box.",
+    'Click the "Minify JSON" button to trigger structural compression.',
+    'The stats panel will display the saved byte size. Click "Copy" or "Download" to retrieve the minimized JSON.',
+];
+
+const relatedArticles = [
+    {
+        title: "JSON Minify vs. Beautify: When to Use Which?",
+        description:
+            "Understand the key differences between compressed JSON and formatted JSON, and when each format is ideal for production and development.",
+        date: "2026-06-03",
+        slug: "json-minify-vs-beautify",
+    },
+];
+---
+
+<ToolLayout
+    title="JSON Minifier Online - Minify and Compress JSON"
+    description="Minify JSON online by removing whitespace and line breaks. Compress JSON safely in your browser and copy the result instantly."
+    h1="JSON Minifier Online"
+    shortDescription="Instantly compress your JSON payloads by stripping out all whitespaces, tabs, and newlines. Perfect for reducing API request sizes."
+    toolHref="/tools/json-minifier"
+    faqs={faqs}
+    howToUseSteps={howToUseSteps}
+    relatedArticles={relatedArticles}
+>
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <!-- Input Column -->
+        <div
+            class="flex flex-col h-full rounded-2xl border border-gray-200 bg-white p-4 dark:border-gray-800 dark:bg-gray-900 shadow-sm"
+        >
+            <div class="flex flex-wrap items-center justify-between gap-4 mb-3">
+                <label
+                    for="json-input"
+                    class="text-sm font-semibold text-gray-700 dark:text-gray-300"
+                >
+                    Source JSON Input
+                </label>
+                <div class="flex items-center gap-2">
+                    <button
+                        id="btn-example"
+                        class="rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700 dark:text-gray-300 px-3 py-1.5 text-xs font-semibold transition"
+                    >
+                        Load Example
+                    </button>
+                    <button
+                        id="btn-clear"
+                        class="rounded-lg bg-red-50 hover:bg-red-100 text-red-600 dark:bg-red-950/40 dark:hover:bg-red-950/70 dark:text-red-400 px-3 py-1.5 text-xs font-semibold transition"
+                    >
+                        Clear
+                    </button>
+                </div>
+            </div>
+            <textarea
+                id="json-input"
+                class="w-full h-96 min-h-[400px] rounded-xl border border-gray-200 bg-gray-50 p-4 font-mono text-sm leading-relaxed text-gray-800 focus:border-brand-500 focus:bg-white focus:outline-none focus:ring-1 focus:ring-brand-500 dark:border-gray-800 dark:bg-gray-950 dark:text-gray-200 dark:focus:border-brand-500 dark:focus:bg-gray-950 resize-y"
+                placeholder='{ "key": "value", "spacing": "will be deleted" }'
+            ></textarea>
+        </div>
+
+        <!-- Output Column -->
+        <div
+            class="flex flex-col h-full rounded-2xl border border-gray-200 bg-white p-4 dark:border-gray-800 dark:bg-gray-900 shadow-sm"
+        >
+            <div class="flex flex-wrap items-center justify-between gap-4 mb-3">
+                <label
+                    for="json-output"
+                    class="text-sm font-semibold text-gray-700 dark:text-gray-300"
+                >
+                    Minified / Compressed JSON
+                </label>
+                <div class="flex items-center gap-2">
+                    <button
+                        id="btn-copy"
+                        class="rounded-lg bg-brand-50 hover:bg-brand-100 text-brand-700 dark:bg-brand-950/50 dark:hover:bg-brand-950 dark:text-brand-400 px-3 py-1.5 text-xs font-semibold transition flex items-center gap-1"
+                    >
+                        <svg
+                            class="h-3.5 w-3.5"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            viewBox="0 0 24 24"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2"
+                            ></path>
+                        </svg>
+                        Copy
+                    </button>
+                    <button
+                        id="btn-download"
+                        class="rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700 dark:text-gray-300 px-3 py-1.5 text-xs font-semibold transition flex items-center gap-1"
+                    >
+                        <svg
+                            class="h-3.5 w-3.5"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            viewBox="0 0 24 24"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
+                            ></path>
+                        </svg>
+                        Download
+                    </button>
+                </div>
+            </div>
+            <div class="relative flex-grow flex flex-col">
+                <textarea
+                    id="json-output"
+                    readonly
+                    class="w-full h-96 min-h-[400px] rounded-xl border border-gray-200 bg-gray-50 p-4 font-mono text-sm leading-relaxed text-gray-800 focus:outline-none dark:border-gray-800 dark:bg-gray-950 dark:text-gray-200 resize-y"
+                    placeholder="Compressed single-line JSON will appear here..."
+                ></textarea>
+            </div>
+        </div>
+    </div>
+
+    <!-- Compression Statistics Banner -->
+    <div
+        id="stats-banner"
+        class="hidden mt-6 rounded-xl border border-brand-200 bg-brand-50 p-4 dark:border-brand-900/30 dark:bg-brand-950/20 text-brand-900 dark:text-brand-300 shadow-sm"
+    >
+        <div class="grid grid-cols-3 gap-4 text-center">
+            <div>
+                <div
+                    class="text-xs font-semibold text-brand-600 dark:text-brand-400 uppercase tracking-wider"
+                >
+                    Original Size
+                </div>
+                <div id="stat-orig" class="text-xl font-bold mt-1">0 bytes</div>
+            </div>
+            <div>
+                <div
+                    class="text-xs font-semibold text-brand-600 dark:text-brand-400 uppercase tracking-wider"
+                >
+                    Compressed Size
+                </div>
+                <div id="stat-comp" class="text-xl font-bold mt-1">0 bytes</div>
+            </div>
+            <div>
+                <div
+                    class="text-xs font-semibold text-brand-600 dark:text-brand-400 uppercase tracking-wider"
+                >
+                    Saved Ratio
+                </div>
+                <div id="stat-ratio" class="text-xl font-bold mt-1">0%</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Actions -->
+    <div
+        class="mt-6 flex justify-end gap-4 rounded-xl border border-gray-200 bg-white p-4 dark:border-gray-800 dark:bg-gray-900 shadow-sm"
+    >
+        <button
+            id="btn-minify"
+            class="rounded-xl bg-brand-600 hover:bg-brand-700 text-white dark:bg-brand-500 dark:hover:bg-brand-600 px-6 py-2.5 text-sm font-bold shadow-sm transition flex items-center gap-1.5"
+        >
+            <svg
+                class="h-4 w-4"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                viewBox="0 0 24 24"
+            >
+                <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M19 13l-7 7-7-7m14-6l-7 7-7-7"></path>
+            </svg>
+            Minify JSON
+        </button>
+    </div>
+
+    <div
+        id="feedback-panel"
+        class="hidden mt-6 rounded-xl p-4 transition-all duration-200 animate-fade-in"
+    >
+    </div>
+</ToolLayout>
+
+<script>
+    const jsonInput = document.getElementById(
+        "json-input",
+    ) as HTMLTextAreaElement;
+    const jsonOutput = document.getElementById(
+        "json-output",
+    ) as HTMLTextAreaElement;
+
+    const btnExample = document.getElementById("btn-example");
+    const btnClear = document.getElementById("btn-clear");
+    const btnCopy = document.getElementById("btn-copy");
+    const btnDownload = document.getElementById("btn-download");
+    const btnMinify = document.getElementById("btn-minify");
+    const feedbackPanel = document.getElementById("feedback-panel");
+
+    const statsBanner = document.getElementById("stats-banner");
+    const statOrig = document.getElementById("stat-orig");
+    const statComp = document.getElementById("stat-comp");
+    const statRatio = document.getElementById("stat-ratio");
+
+    const minifyExample = {
+        title: "Astro Starter Template",
+        dependencies: {
+            astro: "^4.0.0",
+            tailwindcss: "^3.0.0",
+        },
+        scripts: {
+            dev: "astro dev",
+            build: "astro build",
+            preview: "astro preview",
+        },
+        config: {
+            port: 3000,
+            secure: true,
+            routes: ["home", "about", "blog"],
+        },
+    };
+
+    function updateFeedback(type: "success" | "error" | "clear", message = "") {
+        if (!feedbackPanel) return;
+        if (type === "clear") {
+            feedbackPanel.classList.add("hidden");
+            return;
+        }
+
+        feedbackPanel.classList.remove("hidden");
+        if (type === "success") {
+            feedbackPanel.className =
+                "mt-6 rounded-xl p-4 border border-brand-200 bg-brand-50 text-brand-800 dark:border-brand-900/30 dark:bg-brand-950/20 dark:text-brand-400";
+            feedbackPanel.innerHTML = `<span class="font-semibold text-sm">${message}</span>`;
+        } else {
+            feedbackPanel.className =
+                "mt-6 rounded-xl p-4 border border-red-200 bg-red-50 text-red-800 dark:border-red-900/30 dark:bg-red-950/20 dark:text-red-400";
+            feedbackPanel.innerHTML = `<div><span class="font-semibold text-sm block">Failed to Minify JSON</span><span class="text-xs font-mono mt-1 block">${message}</span></div>`;
+        }
+    }
+
+    function handleMinify() {
+        const rawVal = jsonInput.value.trim();
+        if (!rawVal) {
+            updateFeedback("error", "Please enter some JSON to minify.");
+            statsBanner?.classList.add("hidden");
+            return;
+        }
+
+        try {
+            const parsed = JSON.parse(rawVal);
+            const compressed = JSON.stringify(parsed);
+            jsonOutput.value = compressed;
+
+            // Stats
+            const origSize = new Blob([rawVal]).size;
+            const compSize = new Blob([compressed]).size;
+            const ratio =
+                origSize > 0 ? ((origSize - compSize) / origSize) * 100 : 0;
+
+            if (statOrig) statOrig.textContent = `${origSize} bytes`;
+            if (statComp) statComp.textContent = `${compSize} bytes`;
+            if (statRatio) statRatio.textContent = `${ratio.toFixed(1)}%`;
+            statsBanner?.classList.remove("hidden");
+
+            updateFeedback(
+                "success",
+                "JSON minification completed successfully.",
+            );
+        } catch (e: any) {
+            updateFeedback("error", e.message);
+            statsBanner?.classList.add("hidden");
+        }
+    }
+
+    btnExample?.addEventListener("click", () => {
+        jsonInput.value = JSON.stringify(minifyExample, null, 2);
+        updateFeedback("clear");
+        handleMinify();
+    });
+
+    btnClear?.addEventListener("click", () => {
+        jsonInput.value = "";
+        jsonOutput.value = "";
+        updateFeedback("clear");
+        statsBanner?.classList.add("hidden");
+    });
+
+    btnMinify?.addEventListener("click", handleMinify);
+
+    btnCopy?.addEventListener("click", () => {
+        const outputText = jsonOutput.value;
+        if (!outputText) return;
+        navigator.clipboard.writeText(outputText).then(() => {
+            const originalText = btnCopy.innerHTML;
+            btnCopy.innerHTML = `
+        <svg class="h-3.5 w-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+        </svg>
+        Copied!
+      `;
+            setTimeout(() => {
+                btnCopy.innerHTML = originalText;
+            }, 1500);
+        });
+    });
+
+    btnDownload?.addEventListener("click", () => {
+        const outputText = jsonOutput.value;
+        if (!outputText) return;
+        const blob = new Blob([outputText], { type: "application/json" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "minified.json";
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+    });
+</script>

@@ -1,0 +1,198 @@
+---
+import ToolLayout from '../../layouts/ToolLayout.astro';
+
+const faqs = [
+  {
+    question: 'How does the JSON Validator find errors?',
+    answer: 'The validator parses your input JSON using the browser’s built-in parser and catches exceptions. On modern browsers, this provides information about the exact position and line of the syntax error.'
+  },
+  {
+    question: 'Does this tool support JSON Schema validation?',
+    answer: 'This version checks the standard RFC 8259 JSON syntax (which includes strings, numbers, objects, arrays, booleans, and null values). It validates whether the structure is structurally sound.'
+  }
+];
+
+const howToUseSteps = [
+  'Input or paste the JSON text you want to check into the input editor.',
+  'Click the "Validate JSON" button to check the syntax.',
+  'The feedback panel will show green for "Valid JSON" or red with exact error location details for invalid syntax.'
+];
+
+const relatedArticles = [
+  {
+    title: 'How to Validate JSON and Find Syntax Errors',
+    description: 'A comprehensive guide to finding syntax issues in your JSON objects, understanding error messages, and fixing them.',
+    date: '2026-06-08',
+    slug: 'how-to-validate-json'
+  },
+  {
+    title: 'How to Fix Invalid JSON: Common Syntax Errors',
+    description: 'Struggling with invalid JSON? Learn the most common mistakes such as trailing commas, single quotes, and missing brackets.',
+    date: '2026-06-07',
+    slug: 'how-to-fix-invalid-json'
+  }
+];
+---
+
+<ToolLayout
+  title="JSON Validator Online - Check JSON Syntax"
+  description="Validate JSON online and find syntax errors with line and column details. Check JSON format safely in your browser."
+  h1="JSON Validator Online"
+  shortDescription="Check your JSON syntax with precise error reporting. Identify misplaced commas, missing quotes, or bracket mismatches instantly."
+  toolHref="/tools/json-validator"
+  faqs={faqs}
+  howToUseSteps={howToUseSteps}
+  relatedArticles={relatedArticles}
+>
+  <div class="space-y-6">
+    <!-- Input Panel -->
+    <div class="rounded-2xl border border-gray-200 bg-white p-4 dark:border-gray-800 dark:bg-gray-900 shadow-sm">
+      <div class="flex flex-wrap items-center justify-between gap-4 mb-3">
+        <label for="json-input" class="text-sm font-semibold text-gray-700 dark:text-gray-300 flex items-center gap-1.5">
+          <svg class="h-4 w-4 text-brand-600 dark:text-brand-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          Paste JSON to Validate
+        </label>
+        <div class="flex items-center gap-2">
+          <button id="btn-example" class="rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700 dark:text-gray-300 px-3 py-1.5 text-xs font-semibold transition">
+            Load Example
+          </button>
+          <button id="btn-clear" class="rounded-lg bg-red-50 hover:bg-red-100 text-red-600 dark:bg-red-950/40 dark:hover:bg-red-950/70 dark:text-red-400 px-3 py-1.5 text-xs font-semibold transition">
+            Clear
+          </button>
+        </div>
+      </div>
+      <textarea
+        id="json-input"
+        class="w-full h-96 min-h-[400px] rounded-xl border border-gray-200 bg-gray-50 p-4 font-mono text-sm leading-relaxed text-gray-800 focus:border-brand-500 focus:bg-white focus:outline-none focus:ring-1 focus:ring-brand-500 dark:border-gray-800 dark:bg-gray-950 dark:text-gray-200 dark:focus:border-brand-500 dark:focus:bg-gray-950 resize-y"
+        placeholder='Paste your JSON here to test it...'
+      ></textarea>
+    </div>
+
+    <!-- Actions and Options -->
+    <div class="flex flex-wrap items-center justify-between gap-4 rounded-xl border border-gray-200 bg-white p-4 dark:border-gray-800 dark:bg-gray-900 shadow-sm">
+      <div class="flex items-center gap-3">
+        <button id="btn-validate" class="rounded-xl bg-brand-600 hover:bg-brand-700 text-white dark:bg-brand-500 dark:hover:bg-brand-600 px-6 py-2.5 text-sm font-bold shadow-sm transition flex items-center gap-1.5">
+          <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          Validate JSON
+        </button>
+        <button id="btn-format" class="hidden rounded-xl border border-gray-200 hover:bg-gray-50 text-gray-700 dark:border-gray-800 dark:hover:bg-gray-800 dark:text-gray-300 px-4 py-2.5 text-sm font-semibold transition">
+          Beautify Valid JSON
+        </button>
+      </div>
+    </div>
+
+    <!-- Validation Status Display -->
+    <div id="status-panel" class="hidden rounded-xl p-6 transition-all duration-200">
+      <!-- Injected Dynamically -->
+    </div>
+  </div>
+</ToolLayout>
+
+<script>
+  const jsonInput = document.getElementById('json-input') as HTMLTextAreaElement;
+  const btnExample = document.getElementById('btn-example');
+  const btnClear = document.getElementById('btn-clear');
+  const btnValidate = document.getElementById('btn-validate');
+  const btnFormat = document.getElementById('btn-format');
+  const statusPanel = document.getElementById('status-panel');
+
+  const validExample = {
+    "status": "success",
+    "message": "This is a clean and valid JSON object.",
+    "count": 42,
+    "active": true,
+    "tags": ["web", "developer", "tool"]
+  };
+
+  const invalidExample = `{
+  "status": "fail",
+  "message": "Find the trailing comma below",
+  "count": 42,
+  "active": true,
+  "tags": ["web", "developer", "tool"],
+}`;
+
+  function checkJSON() {
+    const rawVal = jsonInput.value.trim();
+    if (!rawVal) {
+      showStatus('error', 'Please enter some JSON data to validate.');
+      btnFormat?.classList.add('hidden');
+      return;
+    }
+
+    try {
+      const parsed = JSON.parse(rawVal);
+      showStatus('success', 'Valid JSON! No syntax errors found in your document.');
+      btnFormat?.classList.remove('hidden');
+    } catch (e: any) {
+      showStatus('error', e.message);
+      btnFormat?.classList.add('hidden');
+    }
+  }
+
+  function showStatus(type: 'success' | 'error', message: string) {
+    if (!statusPanel) return;
+    statusPanel.classList.remove('hidden');
+
+    if (type === 'success') {
+      statusPanel.className = "rounded-xl p-6 border border-brand-200 bg-brand-50 text-brand-900 dark:border-brand-900/30 dark:bg-brand-950/20 dark:text-brand-300";
+      statusPanel.innerHTML = `
+        <div class="flex items-start gap-4">
+          <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-brand-100 text-brand-800 dark:bg-brand-950 dark:text-brand-400">
+            <svg class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </div>
+          <div>
+            <h3 class="text-lg font-bold text-brand-800 dark:text-brand-400">Valid JSON</h3>
+            <p class="mt-1 text-sm text-brand-700 dark:text-brand-300">${message}</p>
+          </div>
+        </div>
+      `;
+    } else {
+      statusPanel.className = "rounded-xl p-6 border border-red-200 bg-red-50 text-red-950 dark:border-red-900/30 dark:bg-red-950/20 dark:text-red-400";
+      statusPanel.innerHTML = `
+        <div class="flex items-start gap-4">
+          <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-red-100 text-red-800 dark:bg-red-950 dark:text-red-400">
+            <svg class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+            </svg>
+          </div>
+          <div>
+            <h3 class="text-lg font-bold text-red-800 dark:text-red-400">Syntax Error Found</h3>
+            <p class="mt-1 text-sm text-red-700 dark:text-red-300 font-semibold mb-2">Details:</p>
+            <p class="text-sm font-mono bg-white dark:bg-gray-900 border border-red-200 dark:border-red-950 p-3 rounded-lg text-red-600 dark:text-red-400 break-all leading-relaxed">${message}</p>
+          </div>
+        </div>
+      `;
+    }
+  }
+
+  // Event listeners
+  btnExample?.addEventListener('click', () => {
+    // 50% chance loaded with invalid or valid to show capability
+    const useValid = Math.random() > 0.5;
+    jsonInput.value = useValid ? JSON.stringify(validExample, null, 2) : invalidExample;
+    checkJSON();
+  });
+
+  btnClear?.addEventListener('click', () => {
+    jsonInput.value = '';
+    statusPanel?.classList.add('hidden');
+    btnFormat?.classList.add('hidden');
+  });
+
+  btnValidate?.addEventListener('click', checkJSON);
+
+  btnFormat?.addEventListener('click', () => {
+    try {
+      const rawVal = jsonInput.value.trim();
+      const parsed = JSON.parse(rawVal);
+      jsonInput.value = JSON.stringify(parsed, null, 2);
+    } catch(e) {}
+  });
+</script>

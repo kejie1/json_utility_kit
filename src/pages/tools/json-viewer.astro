@@ -1,0 +1,535 @@
+---
+import ToolLayout from "../../layouts/ToolLayout.astro";
+
+const faqs = [
+    {
+        question: "How do I inspect elements in the JSON tree?",
+        answer: "Simply hover over any key or value in the generated interactive JSON tree. You can click on folders or brackets to collapse/expand elements, and hover to see the specific path (like item.tags[0]).",
+    },
+    {
+        question: "Does searching highlight matching values?",
+        answer: "Yes! The search box scans through keys and string/number values, highlighting matches in real-time, helping you quickly spot specific data inside large JSON configurations.",
+    },
+];
+
+const howToUseSteps = [
+    "Input your complex or nested JSON into the raw text input pane.",
+    'Click the "Generate Interactive Tree" button to analyze and parse your structure.',
+    'Use the Search box to query specific words, and click "Expand All" or "Collapse All" to toggle nodes.',
+];
+
+const relatedArticles = [
+    {
+        title: "What Is JSON? An Introduction to JavaScript Object Notation",
+        description:
+            "Discover the history, syntax, and use-cases of JSON, the web’s most popular data interchange format.",
+        date: "2026-06-05",
+        slug: "what-is-json",
+    },
+];
+---
+
+<ToolLayout
+    title="JSON Viewer Online - View JSON as a Tree"
+    description="View JSON online as an expandable tree. Search, expand, collapse, and inspect JSON data directly in your browser."
+    h1="JSON Viewer Online"
+    shortDescription="Transform your flat raw JSON into an elegant, interactive tree. Easily expand/collapse nodes, search key-values, and copy JSON paths."
+    toolHref="/tools/json-viewer"
+    faqs={faqs}
+    howToUseSteps={howToUseSteps}
+    relatedArticles={relatedArticles}
+>
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+        <!-- Left Input Panel (5 Cols) -->
+        <div
+            class="lg:col-span-5 flex flex-col rounded-2xl border border-gray-200 bg-white p-4 dark:border-gray-800 dark:bg-gray-900 shadow-sm h-[550px]"
+        >
+            <div class="flex items-center justify-between gap-4 mb-3 shrink-0">
+                <label
+                    for="json-input"
+                    class="text-sm font-semibold text-gray-700 dark:text-gray-300"
+                >
+                    Raw JSON Input
+                </label>
+                <div class="flex gap-2">
+                    <button
+                        id="btn-example"
+                        class="rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700 dark:text-gray-300 px-2.5 py-1 text-xs font-semibold transition"
+                    >
+                        Example
+                    </button>
+                    <button
+                        id="btn-clear"
+                        class="rounded-lg bg-red-50 hover:bg-red-100 text-red-600 dark:bg-red-950/40 dark:hover:bg-red-950/70 dark:text-red-400 px-2.5 py-1 text-xs font-semibold transition"
+                    >
+                        Clear
+                    </button>
+                </div>
+            </div>
+            <textarea
+                id="json-input"
+                class="w-full flex-grow rounded-xl border border-gray-200 bg-gray-50 p-4 font-mono text-sm leading-relaxed text-gray-800 focus:border-brand-500 focus:bg-white focus:outline-none focus:ring-1 focus:ring-brand-500 dark:border-gray-800 dark:bg-gray-950 dark:text-gray-200 dark:focus:border-brand-500 dark:focus:bg-gray-950 resize-none"
+                placeholder='{"paste":"nested json here..."}'></textarea>
+            <button
+                id="btn-parse"
+                class="mt-4 w-full rounded-xl bg-brand-600 hover:bg-brand-700 text-white dark:bg-brand-500 dark:hover:bg-brand-600 py-2.5 text-sm font-bold shadow-sm transition shrink-0 flex items-center justify-center gap-1.5"
+            >
+                <svg
+                    class="h-4 w-4"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    viewBox="0 0 24 24"
+                >
+                    <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
+                    ></path>
+                </svg>
+                Generate Interactive Tree
+            </button>
+        </div>
+
+        <!-- Right Viewer Panel (7 Cols) -->
+        <div
+            class="lg:col-span-7 flex flex-col rounded-2xl border border-gray-200 bg-white p-4 dark:border-gray-800 dark:bg-gray-900 shadow-sm h-[550px]"
+        >
+            <!-- Toolbar -->
+            <div
+                class="flex flex-wrap items-center justify-between gap-3 mb-3 shrink-0"
+            >
+                <div class="flex items-center gap-2">
+                    <button
+                        id="btn-expand-all"
+                        class="rounded-lg border border-gray-200 hover:bg-gray-50 text-xs font-semibold px-2.5 py-1.5 text-gray-700 dark:border-gray-800 dark:hover:bg-gray-800 dark:text-gray-300 transition"
+                    >
+                        Expand All
+                    </button>
+                    <button
+                        id="btn-collapse-all"
+                        class="rounded-lg border border-gray-200 hover:bg-gray-50 text-xs font-semibold px-2.5 py-1.5 text-gray-700 dark:border-gray-800 dark:hover:bg-gray-800 dark:text-gray-300 transition"
+                    >
+                        Collapse All
+                    </button>
+                </div>
+                <div class="relative max-w-xs w-full">
+                    <span
+                        class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"
+                    >
+                        <svg
+                            class="h-4 w-4 text-gray-400"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            viewBox="0 0 24 24"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                            ></path>
+                        </svg>
+                    </span>
+                    <input
+                        id="tree-search"
+                        type="text"
+                        class="block w-full pl-9 pr-3 py-1.5 text-xs rounded-lg border border-gray-200 bg-white placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-brand-500 focus:border-brand-500 dark:border-gray-800 dark:bg-gray-950 dark:placeholder-gray-500 dark:text-gray-300"
+                        placeholder="Search key or value..."
+                    />
+                </div>
+            </div>
+
+            <!-- JSON Path display -->
+            <div
+                class="bg-gray-50 dark:bg-gray-950 border border-gray-200 dark:border-gray-800 rounded-lg px-3 py-1.5 text-xs font-mono text-gray-500 dark:text-gray-400 flex items-center justify-between gap-2 mb-3 shrink-0"
+            >
+                <span class="truncate"
+                    >Hover over elements to see JSON Path.</span
+                >
+                <button
+                    id="btn-copy-path"
+                    class="hidden hover:text-brand-600 dark:hover:text-brand-400 font-semibold text-[10px] uppercase tracking-wider shrink-0"
+                    >Copy Path</button
+                >
+            </div>
+
+            <!-- Tree Render Panel -->
+            <div
+                class="flex-grow overflow-auto border border-gray-200 bg-gray-50 dark:border-gray-800 dark:bg-gray-950 rounded-xl p-4 font-mono text-xs leading-relaxed"
+            >
+                <div
+                    id="tree-container"
+                    class="text-gray-800 dark:text-gray-300 select-none"
+                >
+                    <span class="text-gray-400 italic"
+                        >No tree generated yet. Paste JSON on the left and click
+                        parse.</span
+                    >
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div
+        id="feedback-panel"
+        class="hidden mt-6 rounded-xl p-4 transition-all duration-200"
+    >
+    </div>
+</ToolLayout>
+
+<script>
+    const jsonInput = document.getElementById(
+        "json-input",
+    ) as HTMLTextAreaElement;
+    const treeContainer = document.getElementById("tree-container");
+    const treeSearch = document.getElementById(
+        "tree-search",
+    ) as HTMLInputElement;
+    const btnParse = document.getElementById("btn-parse");
+    const btnExample = document.getElementById("btn-example");
+    const btnClear = document.getElementById("btn-clear");
+    const btnExpandAll = document.getElementById("btn-expand-all");
+    const btnCollapseAll = document.getElementById("btn-collapse-all");
+    const btnCopyPath = document.getElementById("btn-copy-path");
+    const feedbackPanel = document.getElementById("feedback-panel");
+
+    const pathDisplay = document.querySelector(
+        'span[class*="truncate"]',
+    ) as HTMLElement;
+
+    let currentJSONData: any = null;
+    let activePath: string = "";
+
+    const exampleData = {
+        organization: "JSON Toolkit",
+        established: 2026,
+        active: true,
+        services: [
+            {
+                name: "Formatter",
+                reliability: 0.999,
+                tags: ["formatting", "beautifying"],
+            },
+            {
+                name: "Viewer",
+                reliability: 1.0,
+                tags: ["tree", "node-expand"],
+            },
+        ],
+        contributors: ["Alice", "Bob", "Charlie"],
+        meta: null,
+    };
+
+    function updateFeedback(type: "success" | "error" | "clear", message = "") {
+        if (!feedbackPanel) return;
+        if (type === "clear") {
+            feedbackPanel.classList.add("hidden");
+            return;
+        }
+        feedbackPanel.classList.remove("hidden");
+        if (type === "success") {
+            feedbackPanel.className =
+                "mt-6 rounded-xl p-4 border border-brand-200 bg-brand-50 text-brand-800 dark:border-brand-900/30 dark:bg-brand-950/20 dark:text-brand-400";
+            feedbackPanel.innerHTML = `<span class="font-semibold text-sm">${message}</span>`;
+        } else {
+            feedbackPanel.className =
+                "mt-6 rounded-xl p-4 border border-red-200 bg-red-50 text-red-800 dark:border-red-900/30 dark:bg-red-950/20 dark:text-red-400";
+            feedbackPanel.innerHTML = `<div><span class="font-semibold text-sm block">Failed to generate tree</span><span class="text-xs font-mono mt-1 block">${message}</span></div>`;
+        }
+    }
+
+    // Pure JavaScript Tree Builder
+    function buildTreeDOM(
+        key: string | null,
+        value: any,
+        path: string,
+    ): HTMLElement {
+        const node = document.createElement("div");
+        node.className =
+            "tree-node pl-4 border-l border-gray-200/50 dark:border-gray-800/50 relative py-0.5";
+
+        // Key display
+        let keySpan: HTMLElement | null = null;
+        if (key !== null) {
+            keySpan = document.createElement("span");
+            keySpan.className =
+                "tree-key text-blue-600 dark:text-blue-400 mr-1.5 font-semibold cursor-pointer";
+            keySpan.textContent = `"${key}":`;
+            node.appendChild(keySpan);
+        }
+
+        const type = typeof value;
+
+        if (value === null) {
+            const nullSpan = document.createElement("span");
+            nullSpan.className = "tree-value text-gray-400 italic";
+            nullSpan.textContent = "null";
+            node.appendChild(nullSpan);
+        } else if (Array.isArray(value)) {
+            const collapser = document.createElement("span");
+            collapser.className =
+                "tree-bracket text-gray-500 font-bold cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-800 px-1 rounded";
+            collapser.textContent = `[ Array(${value.length}) `;
+
+            const toggleBtn = document.createElement("span");
+            toggleBtn.className =
+                "text-[10px] text-gray-400 ml-1 select-none font-normal";
+            toggleBtn.textContent = "▼";
+            collapser.appendChild(toggleBtn);
+
+            node.appendChild(collapser);
+
+            const childContainer = document.createElement("div");
+            childContainer.className =
+                "tree-children pl-2 mt-0.5 transition-all";
+
+            value.forEach((val, idx) => {
+                const itemPath = `${path}[${idx}]`;
+                childContainer.appendChild(
+                    buildTreeDOM(String(idx), val, itemPath),
+                );
+            });
+
+            node.appendChild(childContainer);
+
+            const closeBracket = document.createElement("div");
+            closeBracket.className = "tree-bracket-close text-gray-500";
+            closeBracket.textContent = "]";
+            node.appendChild(closeBracket);
+
+            // Fold logic
+            collapser.addEventListener("click", () => {
+                childContainer.classList.toggle("hidden");
+                if (childContainer.classList.contains("hidden")) {
+                    collapser.innerHTML = `[ Array(${value.length}) <span class="text-[10px] text-gray-400 ml-1">▶</span> ]`;
+                    closeBracket.classList.add("hidden");
+                } else {
+                    collapser.innerHTML = `[ Array(${value.length}) <span class="text-[10px] text-gray-400 ml-1">▼</span>`;
+                    closeBracket.classList.remove("hidden");
+                }
+            });
+        } else if (type === "object") {
+            const keys = Object.keys(value);
+            const collapser = document.createElement("span");
+            collapser.className =
+                "tree-bracket text-gray-500 font-bold cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-800 px-1 rounded";
+            collapser.textContent = `{ Object(${keys.length}) `;
+
+            const toggleBtn = document.createElement("span");
+            toggleBtn.className =
+                "text-[10px] text-gray-400 ml-1 select-none font-normal";
+            toggleBtn.textContent = "▼";
+            collapser.appendChild(toggleBtn);
+
+            node.appendChild(collapser);
+
+            const childContainer = document.createElement("div");
+            childContainer.className =
+                "tree-children pl-2 mt-0.5 transition-all";
+
+            keys.forEach((k) => {
+                const itemPath = path ? `${path}.${k}` : k;
+                childContainer.appendChild(buildTreeDOM(k, value[k], itemPath));
+            });
+
+            node.appendChild(childContainer);
+
+            const closeBracket = document.createElement("div");
+            closeBracket.className = "tree-bracket-close text-gray-500";
+            closeBracket.textContent = "}";
+            node.appendChild(closeBracket);
+
+            // Fold logic
+            collapser.addEventListener("click", () => {
+                childContainer.classList.toggle("hidden");
+                if (childContainer.classList.contains("hidden")) {
+                    collapser.innerHTML = `{ Object(${keys.length}) <span class="text-[10px] text-gray-400 ml-1 font-normal">▶</span> }`;
+                    closeBracket.classList.add("hidden");
+                } else {
+                    collapser.innerHTML = `{ Object(${keys.length}) <span class="text-[10px] text-gray-400 ml-1 font-normal">▼</span>`;
+                    closeBracket.classList.remove("hidden");
+                }
+            });
+        } else if (type === "string") {
+            const valSpan = document.createElement("span");
+            valSpan.className =
+                "tree-value text-green-600 dark:text-green-400 break-all";
+            valSpan.textContent = `"${value}"`;
+            node.appendChild(valSpan);
+        } else if (type === "number") {
+            const valSpan = document.createElement("span");
+            valSpan.className = "tree-value text-amber-600 dark:text-amber-500";
+            valSpan.textContent = String(value);
+            node.appendChild(valSpan);
+        } else if (type === "boolean") {
+            const valSpan = document.createElement("span");
+            valSpan.className =
+                "tree-value text-purple-600 dark:text-purple-400 font-semibold";
+            valSpan.textContent = String(value);
+            node.appendChild(valSpan);
+        }
+
+        // JSON Path Hoover tracking
+        node.addEventListener("mouseenter", (e) => {
+            e.stopPropagation();
+            activePath = path || "root";
+            if (pathDisplay) {
+                pathDisplay.textContent = activePath;
+            }
+            btnCopyPath?.classList.remove("hidden");
+        });
+
+        return node;
+    }
+
+    function handleParse() {
+        const rawVal = jsonInput.value.trim();
+        if (!rawVal) {
+            updateFeedback(
+                "error",
+                "Please enter valid JSON string on the left to render.",
+            );
+            return;
+        }
+
+        try {
+            currentJSONData = JSON.parse(rawVal);
+            if (treeContainer) {
+                treeContainer.innerHTML = "";
+                const dom = buildTreeDOM(null, currentJSONData, "");
+                treeContainer.appendChild(dom);
+            }
+            updateFeedback(
+                "success",
+                "JSON parsed successfully. Explore the interactive tree structure below.",
+            );
+        } catch (e: any) {
+            updateFeedback("error", e.message);
+        }
+    }
+
+    function handleSearch() {
+        const query = treeSearch.value.trim().toLowerCase();
+        const elements = document.querySelectorAll(".tree-node");
+
+        elements.forEach((elem) => {
+            const keySpan = elem.querySelector(".tree-key");
+            const valSpan = elem.querySelector(".tree-value");
+
+            let isMatch = false;
+            if (query === "") {
+                elem.classList.remove("opacity-40");
+                keySpan?.classList.remove(
+                    "bg-yellow-200",
+                    "dark:bg-yellow-900/40",
+                );
+                valSpan?.classList.remove(
+                    "bg-yellow-200",
+                    "dark:bg-yellow-900/40",
+                );
+                return;
+            }
+
+            const keyText = keySpan?.textContent?.toLowerCase() || "";
+            const valText = valSpan?.textContent?.toLowerCase() || "";
+
+            if (keyText.includes(query) || valText.includes(query)) {
+                isMatch = true;
+            }
+
+            if (isMatch) {
+                elem.classList.remove("opacity-40");
+                if (keyText.includes(query))
+                    keySpan?.classList.add(
+                        "bg-yellow-200",
+                        "dark:bg-yellow-900/40",
+                    );
+                if (valText.includes(query))
+                    valSpan?.classList.add(
+                        "bg-yellow-200",
+                        "dark:bg-yellow-900/40",
+                    );
+            } else {
+                elem.classList.add("opacity-40");
+                keySpan?.classList.remove(
+                    "bg-yellow-200",
+                    "dark:bg-yellow-900/40",
+                );
+                valSpan?.classList.remove(
+                    "bg-yellow-200",
+                    "dark:bg-yellow-900/40",
+                );
+            }
+        });
+    }
+
+    // Expand / Collapse all
+    btnExpandAll?.addEventListener("click", () => {
+        const children = document.querySelectorAll(".tree-children");
+        const brackets = document.querySelectorAll(".tree-bracket");
+        const closes = document.querySelectorAll(".tree-bracket-close");
+
+        children.forEach((c) => c.classList.remove("hidden"));
+        closes.forEach((c) => c.classList.remove("hidden"));
+
+        // reset collapser labels
+        brackets.forEach((b) => {
+            const label = b.innerHTML;
+            if (label.includes("▶")) {
+                b.innerHTML = label.replace("▶", "▼");
+            }
+        });
+    });
+
+    btnCollapseAll?.addEventListener("click", () => {
+        const children = document.querySelectorAll(".tree-children");
+        const brackets = document.querySelectorAll(".tree-bracket");
+        const closes = document.querySelectorAll(".tree-bracket-close");
+
+        children.forEach((c) => c.classList.add("hidden"));
+        closes.forEach((c) => c.classList.add("hidden"));
+
+        // reset labels to display arrow and brackets closed
+        brackets.forEach((b) => {
+            const label = b.innerHTML;
+            if (label.includes("▼")) {
+                b.innerHTML = label.replace("▼", "▶");
+            }
+        });
+    });
+
+    btnCopyPath?.addEventListener("click", () => {
+        if (!activePath) return;
+        navigator.clipboard.writeText(activePath).then(() => {
+            const originalText = btnCopyPath.innerHTML;
+            btnCopyPath.innerHTML = "COPIED!";
+            setTimeout(() => {
+                btnCopyPath.innerHTML = originalText;
+            }, 1000);
+        });
+    });
+
+    // Event bindings
+    btnExample?.addEventListener("click", () => {
+        jsonInput.value = JSON.stringify(exampleData, null, 2);
+        updateFeedback("clear");
+        handleParse();
+    });
+
+    btnClear?.addEventListener("click", () => {
+        jsonInput.value = "";
+        if (treeContainer) {
+            treeContainer.innerHTML =
+                '<span class="text-gray-400 italic">No tree generated yet. Paste JSON on the left and click parse.</span>';
+        }
+        updateFeedback("clear");
+        if (pathDisplay)
+            pathDisplay.textContent = "Hover over elements to see JSON Path.";
+        btnCopyPath?.classList.add("hidden");
+        treeSearch.value = "";
+    });
+
+    btnParse?.addEventListener("click", handleParse);
+    treeSearch?.addEventListener("input", handleSearch);
+</script>

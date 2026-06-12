@@ -1,0 +1,130 @@
+---
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout
+    title="Contact Us - JSON Utility Kit"
+    description="Have feature requests or feedback? Reach out to the JSON Utility Kit team. We'd love to hear your thoughts."
+>
+    <div class="mx-auto max-w-3xl px-4 py-16 sm:px-6 lg:px-8">
+        <div class="text-center max-w-2xl mx-auto mb-12">
+            <h1
+                class="text-3xl font-extrabold tracking-tight text-gray-900 dark:text-white sm:text-4xl"
+            >
+                Contact & Feedback
+            </h1>
+            <p class="mt-3 text-lg text-gray-500 dark:text-gray-400">
+                Have questions, bug reports, or feature ideas? Drop us a line.
+            </p>
+        </div>
+
+        <!-- Contact Info Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
+            <div
+                class="rounded-xl border border-gray-200 bg-white p-6 dark:border-gray-800 dark:bg-gray-900 shadow-sm"
+            >
+                <h2
+                    class="text-base font-bold text-gray-900 dark:text-white flex items-center gap-2 mb-2"
+                >
+                    <svg
+                        class="h-5 w-5 text-brand-600 dark:text-brand-500"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        viewBox="0 0 24 24"
+                    >
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                        ></path>
+                    </svg>
+                    General Support
+                </h2>
+                <p
+                    class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed mb-4"
+                >
+                    For general questions about the toolset or data processing.
+                </p>
+                <span
+                    class="text-sm font-semibold text-brand-600 dark:text-brand-400 font-mono"
+                    >support@jsonutilitykit.com</span
+                >
+            </div>
+
+            <div
+                class="rounded-xl border border-gray-200 bg-white p-6 dark:border-gray-800 dark:bg-gray-900 shadow-sm"
+            >
+                <h2
+                    class="text-base font-bold text-gray-900 dark:text-white flex items-center gap-2 mb-2"
+                >
+                    <svg
+                        class="h-5 w-5 text-brand-600 dark:text-brand-500"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        viewBox="0 0 24 24"
+                    >
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path>
+                    </svg>
+                    Developer Relations
+                </h2>
+                <p
+                    class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed mb-4"
+                >
+                    For open-source contributions, reporting bugs, or listing
+                    ideas.
+                </p>
+                <span
+                    class="text-sm font-semibold text-brand-600 dark:text-brand-400 font-mono"
+                    >dev@jsonutilitykit.com</span
+                >
+            </div>
+        </div>
+
+        <!-- Contact advice -->
+        <div
+            class="rounded-2xl bg-gray-50 dark:bg-gray-900/50 border border-gray-200 dark:border-gray-800 p-8"
+        >
+            <h2 class="text-lg font-bold text-gray-900 dark:text-white mb-3">
+                Feedback Guidelines
+            </h2>
+            <p
+                class="text-sm text-gray-600 dark:text-gray-300 leading-relaxed mb-4"
+            >
+                We are constantly adding tool upgrades. If you would like to
+                recommend new functionalities (like a JSON Diff comparison tool,
+                YAML formatter, XML transformer, etc.), please reach out!
+            </p>
+            <div
+                class="rounded-lg bg-yellow-50 dark:bg-yellow-950/20 border border-yellow-200 dark:border-yellow-900/30 p-4"
+            >
+                <div class="flex gap-2">
+                    <svg
+                        class="h-5 w-5 shrink-0 text-yellow-600 dark:text-yellow-500 mt-0.5"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        viewBox="0 0 24 24"
+                    >
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+                        ></path>
+                    </svg>
+                    <p
+                        class="text-xs text-yellow-800 dark:text-yellow-400 leading-relaxed"
+                    >
+                        <strong>Security Reminder:</strong> Never send your sensitive
+                        production credentials, private APIs keys, or personal customer
+                        databases in emails when sending bug reports!
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</Layout>

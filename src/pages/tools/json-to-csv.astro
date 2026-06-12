@@ -1,0 +1,349 @@
+---
+import ToolLayout from "../../layouts/ToolLayout.astro";
+
+const faqs = [
+    {
+        question: "How are nested JSON objects converted to CSV?",
+        answer: "Standard CSV is a flat spreadsheet format and does not natively support nested objects or arrays. In our converter, any nested objects or arrays are serialized into stringified JSON blocks so you do not lose data.",
+    },
+    {
+        question: 'What is the "Delimiter" option?',
+        answer: "A delimiter is the character that separates values in your data file. While standard CSV files use a comma (,), some locales or software (like Microsoft Excel in certain regions) prefer semicolons (;) or tabs.",
+    },
+];
+
+const howToUseSteps = [
+    "Paste your JSON array of objects in the input textarea.",
+    "Choose your preferred CSV separator delimiter (Comma, Semicolon, or Tab).",
+    'Click "Convert to CSV". Download your spreadsheet file as a .csv file directly to your desktop.',
+];
+
+const relatedArticles = [
+    {
+        title: "What Is JSON? An Introduction to JavaScript Object Notation",
+        description:
+            "Discover the history, syntax, and use-cases of JSON, the web’s most popular data interchange format.",
+        date: "2026-06-05",
+        slug: "what-is-json",
+    },
+];
+---
+
+<ToolLayout
+    title="JSON to CSV Converter Online - Export JSON to Excel"
+    description="Convert JSON arrays to flat CSV tables instantly. Free browser-based JSON to CSV converter with key extraction and delimiter configuration."
+    h1="JSON to CSV Converter"
+    shortDescription="Transform your structured JSON data arrays into standard, tabular CSV files. Seamlessly load arrays of objects into spreadsheets like Excel."
+    toolHref="/tools/json-to-csv"
+    faqs={faqs}
+    howToUseSteps={howToUseSteps}
+    relatedArticles={relatedArticles}
+>
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <!-- Input Panel -->
+        <div
+            class="flex flex-col h-full rounded-2xl border border-gray-200 bg-white p-4 dark:border-gray-800 dark:bg-gray-900 shadow-sm"
+        >
+            <div class="flex flex-wrap items-center justify-between gap-4 mb-3">
+                <label
+                    for="json-input"
+                    class="text-sm font-semibold text-gray-700 dark:text-gray-300"
+                >
+                    JSON Array Input
+                </label>
+                <div class="flex gap-2">
+                    <button
+                        id="btn-example"
+                        class="rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700 dark:text-gray-300 px-3 py-1.5 text-xs font-semibold transition"
+                    >
+                        Load Example
+                    </button>
+                    <button
+                        id="btn-clear"
+                        class="rounded-lg bg-red-50 hover:bg-red-100 text-red-600 dark:bg-red-950/40 dark:hover:bg-red-950/70 dark:text-red-400 px-3 py-1.5 text-xs font-semibold transition"
+                    >
+                        Clear
+                    </button>
+                </div>
+            </div>
+            <textarea
+                id="json-input"
+                class="w-full h-96 min-h-[400px] rounded-xl border border-gray-200 bg-gray-50 p-4 font-mono text-sm leading-relaxed text-gray-800 focus:border-brand-500 focus:bg-white focus:outline-none focus:ring-1 focus:ring-brand-500 dark:border-gray-800 dark:bg-gray-950 dark:text-gray-200 dark:focus:border-brand-500 dark:focus:bg-gray-950 resize-y"
+                placeholder='[{"id": 1, "name": "Alice"}, {"id": 2, "name": "Bob"}]'
+            ></textarea>
+        </div>
+
+        <!-- Output Panel -->
+        <div
+            class="flex flex-col h-full rounded-2xl border border-gray-200 bg-white p-4 dark:border-gray-800 dark:bg-gray-900 shadow-sm"
+        >
+            <div class="flex flex-wrap items-center justify-between gap-4 mb-3">
+                <label
+                    for="csv-output"
+                    class="text-sm font-semibold text-gray-700 dark:text-gray-300"
+                >
+                    Tabular CSV Output
+                </label>
+                <div class="flex items-center gap-2">
+                    <button
+                        id="btn-copy"
+                        class="rounded-lg bg-brand-50 hover:bg-brand-100 text-brand-700 dark:bg-brand-950/50 dark:hover:bg-brand-950 dark:text-brand-400 px-3 py-1.5 text-xs font-semibold transition flex items-center gap-1"
+                    >
+                        Copy CSV
+                    </button>
+                    <button
+                        id="btn-download"
+                        class="rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700 dark:text-gray-300 px-3 py-1.5 text-xs font-semibold transition flex items-center gap-1"
+                    >
+                        Download CSV
+                    </button>
+                </div>
+            </div>
+            <textarea
+                id="csv-output"
+                readonly
+                class="w-full h-96 min-h-[400px] rounded-xl border border-gray-200 bg-gray-50 p-4 font-mono text-sm leading-relaxed text-gray-800 focus:outline-none dark:border-gray-800 dark:bg-gray-950 dark:text-gray-200 resize-y"
+                placeholder="Converted CSV table structure will appear here..."
+            ></textarea>
+        </div>
+    </div>
+
+    <!-- Settings and Triggers -->
+    <div
+        class="mt-6 flex flex-wrap items-center justify-between gap-4 rounded-xl border border-gray-200 bg-white p-4 dark:border-gray-800 dark:bg-gray-900 shadow-sm"
+    >
+        <div class="flex flex-wrap items-center gap-4">
+            <div class="flex items-center gap-2">
+                <span
+                    class="text-sm font-medium text-gray-500 dark:text-gray-400"
+                    >CSV Delimiter:</span
+                >
+                <select
+                    id="delimiter-select"
+                    class="rounded-lg border border-gray-200 bg-white px-3 py-1.5 text-sm font-medium text-gray-700 dark:border-gray-800 dark:bg-gray-950 dark:text-gray-300 focus:outline-none focus:ring-1 focus:ring-brand-500"
+                >
+                    <option value="," selected>Comma ( , )</option>
+                    <option value=";">Semicolon ( ; )</option>
+                    <option value="\t">Tab ( \t )</option>
+                </select>
+            </div>
+        </div>
+
+        <button
+            id="btn-convert"
+            class="rounded-xl bg-brand-600 hover:bg-brand-700 text-white dark:bg-brand-500 dark:hover:bg-brand-600 px-6 py-2.5 text-sm font-bold shadow-sm transition flex items-center gap-1.5"
+        >
+            <svg
+                class="h-4 w-4"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                viewBox="0 0 24 24"
+            >
+                <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path>
+            </svg>
+            Convert to CSV
+        </button>
+    </div>
+
+    <!-- Error or warning feedback panel -->
+    <div
+        id="feedback-panel"
+        class="hidden mt-6 rounded-xl p-4 transition-all duration-200"
+    >
+    </div>
+</ToolLayout>
+
+<script>
+    const jsonInput = document.getElementById(
+        "json-input",
+    ) as HTMLTextAreaElement;
+    const csvOutput = document.getElementById(
+        "csv-output",
+    ) as HTMLTextAreaElement;
+    const delimiterSelect = document.getElementById(
+        "delimiter-select",
+    ) as HTMLSelectElement;
+
+    const btnExample = document.getElementById("btn-example");
+    const btnClear = document.getElementById("btn-clear");
+    const btnCopy = document.getElementById("btn-copy");
+    const btnDownload = document.getElementById("btn-download");
+    const btnConvert = document.getElementById("btn-convert");
+    const feedbackPanel = document.getElementById("feedback-panel");
+
+    const jsonExample = [
+        {
+            id: 101,
+            name: "George Washington",
+            role: "President",
+            active: false,
+            attributes: { tenure: 8 },
+        },
+        {
+            id: 102,
+            name: "Abraham Lincoln",
+            role: "President",
+            active: true,
+            attributes: { tenure: 4 },
+        },
+        {
+            id: 103,
+            name: "Thomas Jefferson",
+            role: "Statesman",
+            active: false,
+            attributes: null,
+        },
+        {
+            id: 104,
+            name: "Benjamin Franklin",
+            role: "Inventor",
+            active: false,
+            location: "Philadelphia",
+        },
+    ];
+
+    function updateFeedback(type: "success" | "error" | "clear", message = "") {
+        if (!feedbackPanel) return;
+        if (type === "clear") {
+            feedbackPanel.classList.add("hidden");
+            return;
+        }
+
+        feedbackPanel.classList.remove("hidden");
+        if (type === "success") {
+            feedbackPanel.className =
+                "mt-6 rounded-xl p-4 border border-brand-200 bg-brand-50 text-brand-800 dark:border-brand-900/30 dark:bg-brand-950/20 dark:text-brand-400";
+            feedbackPanel.innerHTML = `<span class="font-semibold text-sm">${message}</span>`;
+        } else {
+            feedbackPanel.className =
+                "mt-6 rounded-xl p-4 border border-red-200 bg-red-50 text-red-800 dark:border-red-900/30 dark:bg-red-950/20 dark:text-red-400";
+            feedbackPanel.innerHTML = `<div><span class="font-semibold text-sm block">Conversion Error</span><span class="text-xs font-mono mt-1 block">${message}</span></div>`;
+        }
+    }
+
+    function convertJSONToCSV() {
+        const rawVal = jsonInput.value.trim();
+        if (!rawVal) {
+            updateFeedback("error", "Please input some JSON data first.");
+            return;
+        }
+
+        try {
+            const parsed = JSON.parse(rawVal);
+            const dataArray = Array.isArray(parsed) ? parsed : [parsed];
+
+            if (dataArray.length === 0) {
+                updateFeedback(
+                    "error",
+                    "Empty JSON array cannot be transformed.",
+                );
+                return;
+            }
+
+            // Collect all unique headers
+            const headerSet = new Set<string>();
+            dataArray.forEach((item) => {
+                if (item && typeof item === "object") {
+                    Object.keys(item).forEach((key) => headerSet.add(key));
+                }
+            });
+
+            const headers = Array.from(headerSet);
+            if (headers.length === 0) {
+                updateFeedback(
+                    "error",
+                    "No object properties found to build CSV headers.",
+                );
+                return;
+            }
+
+            // Read delimiter
+            let delim = delimiterSelect.value;
+            if (delim === "\\t") {
+                delim = "\t";
+            }
+
+            // CSV Generation
+            const csvLines: string[] = [];
+
+            // Headers row with quotes
+            const headerLine = headers
+                .map((h) => `"${h.replace(/"/g, '""')}"`)
+                .join(delim);
+            csvLines.push(headerLine);
+
+            // Data rows
+            dataArray.forEach((item) => {
+                const row = headers.map((header) => {
+                    let val = item[header];
+                    if (val === undefined || val === null) {
+                        return "";
+                    }
+                    if (typeof val === "object") {
+                        val = JSON.stringify(val); // Stringify nested structures
+                    }
+                    const strVal = String(val);
+                    // Escape quotes in CSV field
+                    return `"${strVal.replace(/"/g, '""')}"`;
+                });
+                csvLines.push(row.join(delim));
+            });
+
+            csvOutput.value = csvLines.join("\n");
+            updateFeedback(
+                "success",
+                `Success: Successfully flattened ${dataArray.length} items to CSV format.`,
+            );
+        } catch (e: any) {
+            updateFeedback(
+                "error",
+                `Invalid JSON. Ensure your input is a valid JSON array. Error: ${e.message}`,
+            );
+        }
+    }
+
+    // Bindings
+    btnExample?.addEventListener("click", () => {
+        jsonInput.value = JSON.stringify(jsonExample, null, 2);
+        updateFeedback("clear");
+        convertJSONToCSV();
+    });
+
+    btnClear?.addEventListener("click", () => {
+        jsonInput.value = "";
+        csvOutput.value = "";
+        updateFeedback("clear");
+    });
+
+    btnConvert?.addEventListener("click", convertJSONToCSV);
+
+    btnCopy?.addEventListener("click", () => {
+        const csvVal = csvOutput.value;
+        if (!csvVal) return;
+        navigator.clipboard.writeText(csvVal).then(() => {
+            const originalText = btnCopy.innerHTML;
+            btnCopy.innerHTML = "Copied!";
+            setTimeout(() => {
+                btnCopy.innerHTML = originalText;
+            }, 1500);
+        });
+    });
+
+    btnDownload?.addEventListener("click", () => {
+        const csvVal = csvOutput.value;
+        if (!csvVal) return;
+        const blob = new Blob([csvVal], { type: "text/csv;charset=utf-8;" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "exported_data.csv";
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+    });
+</script>

@@ -1,0 +1,377 @@
+---
+import ToolLayout from "../../layouts/ToolLayout.astro";
+
+const faqs = [
+    {
+        question: "How does the CSV to JSON parser handle quotes and commas?",
+        answer: "Our converter implements standard RFC 4180 parser compliance. It properly tracks double-quoted fields, allowing cells to contain internal commas, tabs, semicolons, and even newlines without corrupting the layout.",
+    },
+    {
+        question: "Does this tool attempt to detect variable types?",
+        answer: 'Yes! By default, the tool will attempt to parse numbers (like "42") and booleans (like "true") into native JSON types rather than plain strings, unless disabled.',
+    },
+];
+
+const howToUseSteps = [
+    "Paste your raw comma-separated CSV text into the input column.",
+    "Choose your source delimiter (e.g., standard Comma or Tab separated) and whether to auto-detect data types.",
+    'Click "Convert to JSON". You will get a clean, validated JSON array of objects.',
+];
+
+const relatedArticles = [
+    {
+        title: "What Is JSON? An Introduction to JavaScript Object Notation",
+        description:
+            "Discover the history, syntax, and use-cases of JSON, the web’s most popular data interchange format.",
+        date: "2026-06-05",
+        slug: "what-is-json",
+    },
+];
+---
+
+<ToolLayout
+    title="CSV to JSON Converter Online - Import CSV to JSON"
+    description="Parse CSV spreadsheet files and export them as clean JSON arrays. Automatically handles headers, quotes, and commas safely in your browser."
+    h1="CSV to JSON Converter"
+    shortDescription="Instantly parse your flat CSV tables or copy-pasted Excel blocks and output them as beautifully formatted, structured JSON arrays."
+    toolHref="/tools/csv-to-json"
+    faqs={faqs}
+    howToUseSteps={howToUseSteps}
+    relatedArticles={relatedArticles}
+>
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <!-- CSV Input Column -->
+        <div
+            class="flex flex-col h-full rounded-2xl border border-gray-200 bg-white p-4 dark:border-gray-800 dark:bg-gray-900 shadow-sm"
+        >
+            <div class="flex flex-wrap items-center justify-between gap-4 mb-3">
+                <label
+                    for="csv-input"
+                    class="text-sm font-semibold text-gray-700 dark:text-gray-300"
+                >
+                    Raw CSV Spreadsheet Input
+                </label>
+                <div class="flex gap-2">
+                    <button
+                        id="btn-example"
+                        class="rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700 dark:text-gray-300 px-3 py-1.5 text-xs font-semibold transition"
+                    >
+                        Load Example
+                    </button>
+                    <button
+                        id="btn-clear"
+                        class="rounded-lg bg-red-50 hover:bg-red-100 text-red-600 dark:bg-red-950/40 dark:hover:bg-red-950/70 dark:text-red-400 px-3 py-1.5 text-xs font-semibold transition"
+                    >
+                        Clear
+                    </button>
+                </div>
+            </div>
+            <textarea
+                id="csv-input"
+                class="w-full h-96 min-h-[400px] rounded-xl border border-gray-200 bg-gray-50 p-4 font-mono text-sm leading-relaxed text-gray-800 focus:border-brand-500 focus:bg-white focus:outline-none focus:ring-1 focus:ring-brand-500 dark:border-gray-800 dark:bg-gray-950 dark:text-gray-200 dark:focus:border-brand-500 dark:focus:bg-gray-950 resize-y"
+                placeholder='id,name,role,active
+1,"George Washington",President,false
+2,"Abraham Lincoln",President,true'
+            ></textarea>
+        </div>
+
+        <!-- JSON Output Column -->
+        <div
+            class="flex flex-col h-full rounded-2xl border border-gray-200 bg-white p-4 dark:border-gray-800 dark:bg-gray-900 shadow-sm"
+        >
+            <div class="flex flex-wrap items-center justify-between gap-4 mb-3">
+                <label
+                    for="json-output"
+                    class="text-sm font-semibold text-gray-700 dark:text-gray-300"
+                >
+                    Resulting JSON Array
+                </label>
+                <div class="flex items-center gap-2">
+                    <button
+                        id="btn-copy"
+                        class="rounded-lg bg-brand-50 hover:bg-brand-100 text-brand-700 dark:bg-brand-950/50 dark:hover:bg-brand-950 dark:text-brand-400 px-3 py-1.5 text-xs font-semibold transition flex items-center gap-1"
+                    >
+                        Copy JSON
+                    </button>
+                    <button
+                        id="btn-download"
+                        class="rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700 dark:text-gray-300 px-3 py-1.5 text-xs font-semibold transition flex items-center gap-1"
+                    >
+                        Download JSON
+                    </button>
+                </div>
+            </div>
+            <textarea
+                id="json-output"
+                readonly
+                class="w-full h-96 min-h-[400px] rounded-xl border border-gray-200 bg-gray-50 p-4 font-mono text-sm leading-relaxed text-gray-800 focus:outline-none dark:border-gray-800 dark:bg-gray-950 dark:text-gray-200 resize-y"
+                placeholder="JSON array output will appear here..."></textarea>
+        </div>
+    </div>
+
+    <!-- Settings and Controls -->
+    <div
+        class="mt-6 flex flex-wrap items-center justify-between gap-4 rounded-xl border border-gray-200 bg-white p-4 dark:border-gray-800 dark:bg-gray-900 shadow-sm"
+    >
+        <div class="flex flex-wrap items-center gap-6">
+            <div class="flex items-center gap-2">
+                <span
+                    class="text-sm font-medium text-gray-500 dark:text-gray-400"
+                    >CSV Separator:</span
+                >
+                <select
+                    id="delimiter-select"
+                    class="rounded-lg border border-gray-200 bg-white px-3 py-1.5 text-sm font-medium text-gray-700 dark:border-gray-800 dark:bg-gray-950 dark:text-gray-300 focus:outline-none focus:ring-1 focus:ring-brand-500"
+                >
+                    <option value="," selected>Comma ( , )</option>
+                    <option value=";">Semicolon ( ; )</option>
+                    <option value="\t">Tab ( \t )</option>
+                </select>
+            </div>
+
+            <label
+                class="inline-flex items-center gap-2 cursor-pointer select-none"
+            >
+                <input
+                    id="type-cast"
+                    type="checkbox"
+                    checked
+                    class="h-4 w-4 rounded border-gray-300 text-brand-600 focus:ring-brand-500 dark:border-gray-800 dark:bg-gray-950"
+                />
+                <span
+                    class="text-sm font-medium text-gray-700 dark:text-gray-300"
+                    >Parse Numbers & Booleans</span
+                >
+            </label>
+        </div>
+
+        <button
+            id="btn-convert"
+            class="rounded-xl bg-brand-600 hover:bg-brand-700 text-white dark:bg-brand-500 dark:hover:bg-brand-600 px-6 py-2.5 text-sm font-bold shadow-sm transition flex items-center gap-1.5"
+        >
+            <svg
+                class="h-4 w-4"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                viewBox="0 0 24 24"
+            >
+                <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"></path>
+            </svg>
+            Convert to JSON
+        </button>
+    </div>
+
+    <div
+        id="feedback-panel"
+        class="hidden mt-6 rounded-xl p-4 transition-all duration-200 animate-fade-in"
+    >
+    </div>
+</ToolLayout>
+
+<script>
+    const csvInput = document.getElementById(
+        "csv-input",
+    ) as HTMLTextAreaElement;
+    const jsonOutput = document.getElementById(
+        "json-output",
+    ) as HTMLTextAreaElement;
+    const delimiterSelect = document.getElementById(
+        "delimiter-select",
+    ) as HTMLSelectElement;
+    const typeCastCheckbox = document.getElementById(
+        "type-cast",
+    ) as HTMLInputElement;
+
+    const btnExample = document.getElementById("btn-example");
+    const btnClear = document.getElementById("btn-clear");
+    const btnCopy = document.getElementById("btn-copy");
+    const btnDownload = document.getElementById("btn-download");
+    const btnConvert = document.getElementById("btn-convert");
+    const feedbackPanel = document.getElementById("feedback-panel");
+
+    const csvExample = `id,name,role,is_active,rating
+1,"George Washington",President,false,4.9
+2,"Abraham Lincoln",President,true,5.0
+3,"Thomas Jefferson",Statesman,false,4.7
+4,"Benjamin Franklin",Inventor,false,4.8`;
+
+    function updateFeedback(type: "success" | "error" | "clear", message = "") {
+        if (!feedbackPanel) return;
+        if (type === "clear") {
+            feedbackPanel.classList.add("hidden");
+            return;
+        }
+
+        feedbackPanel.classList.remove("hidden");
+        if (type === "success") {
+            feedbackPanel.className =
+                "mt-6 rounded-xl p-4 border border-brand-200 bg-brand-50 text-brand-800 dark:border-brand-900/30 dark:bg-brand-950/20 dark:text-brand-400";
+            feedbackPanel.innerHTML = `<span class="font-semibold text-sm">${message}</span>`;
+        } else {
+            feedbackPanel.className =
+                "mt-6 rounded-xl p-4 border border-red-200 bg-red-50 text-red-800 dark:border-red-900/30 dark:bg-red-950/20 dark:text-red-400";
+            feedbackPanel.innerHTML = `<div><span class="font-semibold text-sm block">Parser Failure</span><span class="text-xs font-mono mt-1 block">${message}</span></div>`;
+        }
+    }
+
+    // Robust RFC 4180 CSV parser State Machine
+    function parseCSV(text: string, delimiter = ","): string[][] {
+        const lines: string[][] = [];
+        let row: string[] = [""];
+        let inQuotes = false;
+
+        for (let i = 0; i < text.length; i++) {
+            const char = text[i];
+            const nextChar = text[i + 1];
+
+            if (char === '"') {
+                if (inQuotes && nextChar === '"') {
+                    // Double double quotes escapes quotes in standard CSV
+                    row[row.length - 1] += '"';
+                    i++; // Skip next character
+                } else {
+                    // Toggle quote flag
+                    inQuotes = !inQuotes;
+                }
+            } else if (char === delimiter && !inQuotes) {
+                row.push("");
+            } else if ((char === "\r" || char === "\n") && !inQuotes) {
+                if (char === "\r" && nextChar === "\n") {
+                    i++; // Skip trailing LF in CRLF pairs
+                }
+                lines.push(row);
+                row = [""];
+            } else {
+                row[row.length - 1] += char;
+            }
+        }
+
+        // Push trailing leftovers
+        if (row.length > 1 || row[0] !== "") {
+            lines.push(row);
+        }
+
+        return lines;
+    }
+
+    function convertCSVToJSON() {
+        const csvVal = csvInput.value.trim();
+        if (!csvVal) {
+            updateFeedback("error", "Please enter some CSV spreadsheet rows.");
+            return;
+        }
+
+        let delim = delimiterSelect.value;
+        if (delim === "\\t") {
+            delim = "\t";
+        }
+
+        try {
+            const parsedRows = parseCSV(csvVal, delim);
+            if (parsedRows.length < 2) {
+                updateFeedback(
+                    "error",
+                    "CSV document must have at least one header row and one data row.",
+                );
+                return;
+            }
+
+            // First row is headers
+            const headers = parsedRows[0].map((h) => h.trim());
+            const dataRows = parsedRows.slice(1);
+            const castTypes = typeCastCheckbox.checked;
+
+            const result: any[] = [];
+
+            dataRows.forEach((row, rowIdx) => {
+                // Skip entirely empty rows
+                if (row.length === 1 && row[0] === "") return;
+
+                const obj: any = {};
+                headers.forEach((header, colIdx) => {
+                    let cellVal = row[colIdx];
+                    if (cellVal === undefined) {
+                        cellVal = "";
+                    } else {
+                        cellVal = cellVal.trim();
+                    }
+
+                    if (castTypes) {
+                        // Check if boolean
+                        if (cellVal.toLowerCase() === "true") {
+                            obj[header] = true;
+                        } else if (cellVal.toLowerCase() === "false") {
+                            obj[header] = false;
+                        } else if (cellVal === "") {
+                            obj[header] = null;
+                        } else if (!isNaN(Number(cellVal))) {
+                            obj[header] = Number(cellVal);
+                        } else {
+                            obj[header] = cellVal;
+                        }
+                    } else {
+                        obj[header] = cellVal;
+                    }
+                });
+
+                result.push(obj);
+            });
+
+            jsonOutput.value = JSON.stringify(result, null, 2);
+            updateFeedback(
+                "success",
+                `CSV successfully parsed! Processed ${result.length} objects into an array.`,
+            );
+        } catch (e: any) {
+            updateFeedback(
+                "error",
+                `Failed to parse CSV. Syntax error or mismatched columns. Details: ${e.message}`,
+            );
+        }
+    }
+
+    // Bindings
+    btnExample?.addEventListener("click", () => {
+        csvInput.value = csvExample;
+        updateFeedback("clear");
+        convertCSVToJSON();
+    });
+
+    btnClear?.addEventListener("click", () => {
+        csvInput.value = "";
+        jsonOutput.value = "";
+        updateFeedback("clear");
+    });
+
+    btnConvert?.addEventListener("click", convertCSVToJSON);
+
+    btnCopy?.addEventListener("click", () => {
+        const jsonVal = jsonOutput.value;
+        if (!jsonVal) return;
+        navigator.clipboard.writeText(jsonVal).then(() => {
+            const originalText = btnCopy.innerHTML;
+            btnCopy.innerHTML = "Copied!";
+            setTimeout(() => {
+                btnCopy.innerHTML = originalText;
+            }, 1500);
+        });
+    });
+
+    btnDownload?.addEventListener("click", () => {
+        const jsonVal = jsonOutput.value;
+        if (!jsonVal) return;
+        const blob = new Blob([jsonVal], { type: "application/json" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "parsed_csv.json";
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+    });
+</script>

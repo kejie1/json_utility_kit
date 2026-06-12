@@ -1,0 +1,52 @@
+---
+interface Props {
+  excludeHref: string;
+}
+
+const { excludeHref } = Astro.props;
+
+const tools = [
+  { name: 'JSON Formatter', description: 'Beautify and validate JSON for readability.', href: '/tools/json-formatter', icon: 'M4 6h16M4 12h16M4 18h7' },
+  { name: 'JSON Validator', description: 'Validate JSON syntax with detailed line/column errors.', href: '/tools/json-validator', icon: 'M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z' },
+  { name: 'JSON Beautifier', description: 'Pretty print your JSON with customizable indentation.', href: '/tools/json-beautifier', icon: 'M15 12a3 3 0 11-6 0 3 3 0 016 0z' },
+  { name: 'JSON Viewer', description: 'Explore JSON in a searchable, collapsible tree structure.', href: '/tools/json-viewer', icon: 'M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253' },
+  { name: 'JSON Minifier', description: 'Compress JSON by removing spacing and empty lines.', href: '/tools/json-minifier', icon: 'M19 13l-7 7-7-7m14-6l-7 7-7-7' },
+  { name: 'JSON Editor', description: 'Visual interactive JSON editor and structure builder.', href: '/tools/json-editor', icon: 'M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z' },
+  { name: 'JSON to CSV', description: 'Convert flat or structured JSON arrays to CSV data.', href: '/tools/json-to-csv', icon: 'M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4' },
+  { name: 'CSV to JSON', description: 'Parse CSV files and export them as clean JSON arrays.', href: '/tools/csv-to-json', icon: 'M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4' },
+];
+
+const filteredTools = tools.filter(t => t.href !== excludeHref).slice(0, 4);
+---
+
+<section class="mt-16 border-t border-gray-200 pt-12 dark:border-gray-800">
+  <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">Related JSON Tools</h2>
+  <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+    {filteredTools.map((tool) => (
+      <a
+        href={tool.href}
+        class="group relative flex flex-col justify-between rounded-2xl border border-gray-200 bg-white p-6 shadow-sm transition hover:shadow-md dark:border-gray-800 dark:bg-gray-900 hover:border-brand-500 dark:hover:border-brand-500"
+      >
+        <div>
+          <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-brand-50 text-brand-600 dark:bg-brand-950 dark:text-brand-400 mb-4 group-hover:scale-110 transition-transform">
+            <svg class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d={tool.icon} />
+            </svg>
+          </div>
+          <h3 class="text-base font-semibold text-gray-900 dark:text-white group-hover:text-brand-600 dark:group-hover:text-brand-400 transition-colors">
+            {tool.name}
+          </h3>
+          <p class="mt-2 text-sm text-gray-500 dark:text-gray-400 line-clamp-2">
+            {tool.description}
+          </p>
+        </div>
+        <div class="mt-4 flex items-center text-xs font-semibold text-brand-600 dark:text-brand-400">
+          Open Tool
+          <svg class="h-3 w-3 ml-1 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+          </svg>
+        </div>
+      </a>
+    ))}
+  </div>
+</section>

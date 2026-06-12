@@ -1,0 +1,351 @@
+---
+import ToolLayout from "../../layouts/ToolLayout.astro";
+
+const faqs = [
+    {
+        question: "How does this JSON Editor prevent lag on large files?",
+        answer: 'Unlike some editors that analyze your syntax on every keypress, we decouple editing from formatting. You type smoothly, and click "Validate & Format" only when you want to update the tree or review syntax errors, avoiding CPU throttling.',
+    },
+    {
+        question: "Are there options to sort the keys inside the Editor?",
+        answer: "Yes! We support alphabetical sorting of JSON object keys when formatting, helping you normalize database dumps or configure config files easily.",
+    },
+];
+
+const howToUseSteps = [
+    'Paste your raw text or type directly into the left "Editor Workspace" panel.',
+    'Toggle additional options like "Sort Keys Alphabetically" if desired.',
+    'Click the "Process JSON" button to trigger styling, sorting, validation, and layout updates on the right side.',
+];
+
+const relatedArticles = [
+    {
+        title: "How to Validate JSON and Find Syntax Errors",
+        description:
+            "A comprehensive guide to finding syntax issues in your JSON objects, understanding error messages, and fixing them.",
+        date: "2026-06-08",
+        slug: "how-to-validate-json",
+    },
+];
+---
+
+<ToolLayout
+    title="JSON Editor Online - Edit and Validate JSON"
+    description="Edit, format, and validate JSON online with instant feedback. A fast browser-based JSON editor for developers and data users."
+    h1="JSON Editor Online"
+    shortDescription="Type, configure, and modify JSON objects in real-time. Features on-demand formatting, error tracking, and JSON key sorting."
+    toolHref="/tools/json-editor"
+    faqs={faqs}
+    howToUseSteps={howToUseSteps}
+    relatedArticles={relatedArticles}
+>
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 items-stretch">
+        <!-- Left Editor -->
+        <div
+            class="flex flex-col rounded-2xl border border-gray-200 bg-white p-4 dark:border-gray-800 dark:bg-gray-900 shadow-sm h-[550px]"
+        >
+            <div class="flex items-center justify-between gap-4 mb-3 shrink-0">
+                <span
+                    class="text-sm font-semibold text-gray-700 dark:text-gray-300 flex items-center gap-1.5"
+                >
+                    <svg
+                        class="h-4 w-4 text-brand-600 dark:text-brand-500"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        viewBox="0 0 24 24"
+                    >
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5"
+                        ></path>
+                    </svg>
+                    Editor Workspace
+                </span>
+                <div class="flex gap-2">
+                    <button
+                        id="btn-example"
+                        class="rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700 dark:text-gray-300 px-2.5 py-1 text-xs font-semibold transition"
+                    >
+                        Load Example
+                    </button>
+                    <button
+                        id="btn-clear"
+                        class="rounded-lg bg-red-50 hover:bg-red-100 text-red-600 dark:bg-red-950/40 dark:hover:bg-red-950/70 dark:text-red-400 px-2.5 py-1 text-xs font-semibold transition"
+                    >
+                        Clear
+                    </button>
+                </div>
+            </div>
+            <textarea
+                id="json-input"
+                class="w-full flex-grow rounded-xl border border-gray-200 bg-gray-50 p-4 font-mono text-sm leading-relaxed text-gray-800 focus:border-brand-500 focus:bg-white focus:outline-none focus:ring-1 focus:ring-brand-500 dark:border-gray-800 dark:bg-gray-950 dark:text-gray-200 dark:focus:border-brand-500 dark:focus:bg-gray-950 resize-none"
+                placeholder="Write or paste your JSON object here..."
+            ></textarea>
+        </div>
+
+        <!-- Right Result / Error -->
+        <div
+            class="flex flex-col rounded-2xl border border-gray-200 bg-white p-4 dark:border-gray-800 dark:bg-gray-900 shadow-sm h-[550px]"
+        >
+            <div class="flex items-center justify-between gap-4 mb-3 shrink-0">
+                <span
+                    class="text-sm font-semibold text-gray-700 dark:text-gray-300 flex items-center gap-1.5"
+                >
+                    <svg
+                        class="h-4 w-4 text-brand-600 dark:text-brand-500"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        viewBox="0 0 24 24"
+                    >
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                        ></path>
+                    </svg>
+                    Processed JSON Output
+                </span>
+                <div class="flex gap-2">
+                    <button
+                        id="btn-copy"
+                        class="rounded-lg bg-brand-50 hover:bg-brand-100 text-brand-700 dark:bg-brand-950/50 dark:hover:bg-brand-950 dark:text-brand-400 px-2.5 py-1.5 text-xs font-semibold transition flex items-center gap-1"
+                    >
+                        Copy
+                    </button>
+                    <button
+                        id="btn-download"
+                        class="rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700 dark:text-gray-300 px-2.5 py-1.5 text-xs font-semibold transition flex items-center gap-1"
+                    >
+                        Download
+                    </button>
+                </div>
+            </div>
+            <!-- Output Workspace -->
+            <div
+                class="flex-grow flex flex-col relative rounded-xl border border-gray-200 bg-gray-50 dark:border-gray-800 dark:bg-gray-950 overflow-hidden"
+            >
+                <textarea
+                    id="json-output"
+                    readonly
+                    class="w-full h-full p-4 font-mono text-sm leading-relaxed text-gray-800 dark:text-gray-200 bg-transparent focus:outline-none resize-none"
+                    placeholder="Clean processed JSON output will appear here..."
+                ></textarea>
+            </div>
+        </div>
+    </div>
+
+    <!-- Workspace Controls -->
+    <div
+        class="mt-6 flex flex-wrap items-center justify-between gap-4 rounded-xl border border-gray-200 bg-white p-4 dark:border-gray-800 dark:bg-gray-900 shadow-sm"
+    >
+        <!-- Sort checkbox and formatting settings -->
+        <div class="flex flex-wrap items-center gap-6">
+            <label
+                class="inline-flex items-center gap-2 cursor-pointer select-none"
+            >
+                <input
+                    id="sort-keys"
+                    type="checkbox"
+                    class="h-4 w-4 rounded border-gray-300 text-brand-600 focus:ring-brand-500 dark:border-gray-800 dark:bg-gray-950"
+                />
+                <span
+                    class="text-sm font-medium text-gray-700 dark:text-gray-300"
+                    >Sort Object Keys Alphabetically</span
+                >
+            </label>
+            <div class="flex items-center gap-2">
+                <span
+                    class="text-sm font-medium text-gray-500 dark:text-gray-400"
+                    >Spacing:</span
+                >
+                <select
+                    id="indent-select"
+                    class="rounded-lg border border-gray-200 bg-white px-3 py-1.5 text-xs font-medium text-gray-700 dark:border-gray-800 dark:bg-gray-950 dark:text-gray-300 focus:outline-none"
+                >
+                    <option value="2">2 Spaces</option>
+                    <option value="4" selected>4 Spaces</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Compile trigger -->
+        <button
+            id="btn-process"
+            class="rounded-xl bg-brand-600 hover:bg-brand-700 text-white dark:bg-brand-500 dark:hover:bg-brand-600 px-6 py-2.5 text-sm font-bold shadow-sm transition flex items-center gap-1.5"
+        >
+            <svg
+                class="h-4 w-4"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                viewBox="0 0 24 24"
+            >
+                <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M14.7 15.3a1 1 0 011.4 0l3 3a1 1 0 01-1.4 1.4l-3-3a1 1 0 010-1.4zM4 11a7 7 0 1114 0 7 7 0 01-14 0z"
+                ></path>
+            </svg>
+            Process JSON
+        </button>
+    </div>
+
+    <div
+        id="feedback-panel"
+        class="hidden mt-6 rounded-xl p-4 transition-all duration-200"
+    >
+    </div>
+</ToolLayout>
+
+<script>
+    const jsonInput = document.getElementById(
+        "json-input",
+    ) as HTMLTextAreaElement;
+    const jsonOutput = document.getElementById(
+        "json-output",
+    ) as HTMLTextAreaElement;
+    const sortKeysCheckbox = document.getElementById(
+        "sort-keys",
+    ) as HTMLInputElement;
+    const indentSelect = document.getElementById(
+        "indent-select",
+    ) as HTMLSelectElement;
+
+    const btnExample = document.getElementById("btn-example");
+    const btnClear = document.getElementById("btn-clear");
+    const btnCopy = document.getElementById("btn-copy");
+    const btnDownload = document.getElementById("btn-download");
+    const btnProcess = document.getElementById("btn-process");
+    const feedbackPanel = document.getElementById("feedback-panel");
+
+    const editorExample = {
+        zebra: "Stripe animal",
+        apple: "Sweet round fruit",
+        details: {
+            quantity: 100,
+            organic: true,
+        },
+        banana: "Yellow long fruit",
+        codes: [200, 404, 500],
+    };
+
+    function updateFeedback(type: "success" | "error" | "clear", message = "") {
+        if (!feedbackPanel) return;
+        if (type === "clear") {
+            feedbackPanel.classList.add("hidden");
+            return;
+        }
+
+        feedbackPanel.classList.remove("hidden");
+        if (type === "success") {
+            feedbackPanel.className =
+                "mt-6 rounded-xl p-4 border border-brand-200 bg-brand-50 text-brand-800 dark:border-brand-900/30 dark:bg-brand-950/20 dark:text-brand-400";
+            feedbackPanel.innerHTML = `
+        <div class="flex items-center gap-2">
+          <svg class="h-5 w-5 shrink-0 text-brand-600 dark:text-brand-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          <span class="font-semibold text-sm">${message}</span>
+        </div>
+      `;
+        } else {
+            feedbackPanel.className =
+                "mt-6 rounded-xl p-4 border border-red-200 bg-red-50 text-red-800 dark:border-red-900/30 dark:bg-red-950/20 dark:text-red-400";
+            feedbackPanel.innerHTML = `
+        <div class="flex items-start gap-2">
+          <svg class="h-5 w-5 shrink-0 text-red-600 dark:text-red-500 mt-0.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+          </svg>
+          <div>
+            <span class="font-semibold text-sm block">Parser Failure</span>
+            <span class="text-xs font-mono block mt-1 opacity-90 break-all">${message}</span>
+          </div>
+        </div>
+      `;
+        }
+    }
+
+    // Recursive keys sorter
+    function sortJSONKeys(obj: any): any {
+        if (obj === null || typeof obj !== "object") {
+            return obj;
+        }
+        if (Array.isArray(obj)) {
+            return obj.map(sortJSONKeys);
+        }
+        const sorted: any = {};
+        Object.keys(obj)
+            .sort()
+            .forEach((key) => {
+                sorted[key] = sortJSONKeys(obj[key]);
+            });
+        return sorted;
+    }
+
+    function handleProcess() {
+        const rawVal = jsonInput.value.trim();
+        if (!rawVal) {
+            updateFeedback("error", "Workspace empty. Add some JSON first.");
+            return;
+        }
+
+        try {
+            let parsed = JSON.parse(rawVal);
+            if (sortKeysCheckbox.checked) {
+                parsed = sortJSONKeys(parsed);
+            }
+            const spaces = parseInt(indentSelect.value, 10);
+            jsonOutput.value = JSON.stringify(parsed, null, spaces);
+            updateFeedback(
+                "success",
+                "JSON compiled, formatted, and verified.",
+            );
+        } catch (e: any) {
+            updateFeedback("error", e.message);
+        }
+    }
+
+    // Bindings
+    btnExample?.addEventListener("click", () => {
+        jsonInput.value = JSON.stringify(editorExample, null, 2);
+        updateFeedback("clear");
+        handleProcess();
+    });
+
+    btnClear?.addEventListener("click", () => {
+        jsonInput.value = "";
+        jsonOutput.value = "";
+        updateFeedback("clear");
+    });
+
+    btnProcess?.addEventListener("click", handleProcess);
+
+    btnCopy?.addEventListener("click", () => {
+        const outputText = jsonOutput.value;
+        if (!outputText) return;
+        navigator.clipboard.writeText(outputText).then(() => {
+            const originalText = btnCopy.innerHTML;
+            btnCopy.innerHTML = "COPIED!";
+            setTimeout(() => {
+                btnCopy.innerHTML = originalText;
+            }, 1500);
+        });
+    });
+
+    btnDownload?.addEventListener("click", () => {
+        const outputText = jsonOutput.value;
+        if (!outputText) return;
+        const blob = new Blob([outputText], { type: "application/json" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "edited.json";
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+    });
+</script>
