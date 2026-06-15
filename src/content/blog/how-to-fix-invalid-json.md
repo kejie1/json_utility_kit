@@ -10,7 +10,7 @@ relatedToolName: "JSON Editor"
 
 ## Introduction
 
-JSON is extremely strict. A single incorrect character will cause a `SyntaxError` and halt execution. In this practical guide, we will analyze the top four errors developers make when drafting JSON files and walk through how to solve them.
+JSON is extremely strict. A single incorrect character will cause a `SyntaxError` and halt execution. If you need to trace why your script is failing, read our walkthrough on [how to validate JSON](/blog/how-to-validate-json). In this practical guide, we will analyze the top four errors developers make when drafting JSON files and walk through how to solve them according to the core [JSON specifications](/blog/what-is-json).
 
 ---
 

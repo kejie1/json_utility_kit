@@ -10,7 +10,7 @@ relatedToolName: "JSON Minifier"
 
 ## Comparison at a Glance
 
-In web engineering, you will often find two polar versions of the same JSON file: one that is highly expanded with spacing, and another that is a single, dense line.
+In web engineering, you will often find two polar versions of the same JSON file: one that is highly expanded with spacing, and another that is a single, dense line. If you need to transform one into the other, read our tutorial on [how to format JSON](/blog/how-to-format-json).
 
 Here is the quick difference between the two styles:
 
@@ -41,6 +41,8 @@ Here is the quick difference between the two styles:
 1. **Reviewing API Responses**: Reading structured keys during integration testing.
 2. **Editing Config Files**: Writing `package.json` or server settings files.
 3. **Tutorials and Docs**: Presenting clear code blocks to other developers.
+
+*Try it online:* Format your configs with our [JSON Beautifier](/tools/json-beautifier) or [JSON Formatter](/tools/json-formatter) for perfect indentation.
 
 ---
 

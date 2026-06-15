@@ -10,7 +10,7 @@ relatedToolName: "JSON Editor"
 
 ## Understanding JSON Objects
 
-At the heart of JavaScript Object Notation is the **JSON Object**. Represented as text wrapped in **curly braces** `{ }`, a JSON object maps names (keys) to values. 
+At the heart of [JavaScript Object Notation](/blog/what-is-json) is the **JSON Object**. Represented as text wrapped in **curly braces** `{ }`, a JSON object maps names (keys) to values. 
 
 It is designed to model structured, singular items (such as a single customer, product configuration, or a server metadata output).
 
@@ -25,7 +25,7 @@ It is designed to model structured, singular items (such as a single customer, p
 
 ## Strict Syntax Standards
 
-While JavaScript object literals are very loose, JSON objects are governed by strict parsing standards. If your file does not follow these strict guidelines, it is syntactically invalid:
+While JavaScript object literals are very loose, JSON objects are governed by strict parsing standards. If your file does not follow these strict guidelines, it is syntactically invalid and will trigger a parse exception. To debug and check your files, refer to [how to validate JSON](/blog/how-to-validate-json) or read our troubleshooting guide on [how to fix invalid JSON](/blog/how-to-fix-invalid-json):
 
 1. **Double-Quoted Keys Only**: Keys must *always* be wrapped in double quotes. Single quotes (`'name'`) or bare keys (`name`) will trigger immediate parsing errors.
 2. **Key-Value Colon**: Each key must be separated from its value by a colon (`:`).
@@ -43,7 +43,7 @@ The value side of the pair inside a JSON object can only be one of these valid p
 *   **Boolean**: `true` or `false`
 *   **Null**: `null`
 *   **Nested Object**: `{"address": {"zip": 98101, "city": "Seattle"}}`
-*   **Array**: `{"skills": ["JavaScript", "Astro"]}`
+*   **Array**: `{"skills": ["JavaScript", "Astro"]}`. For list structures, read more about [JSON Arrays](/blog/what-is-a-json-array).
 
 ---
 

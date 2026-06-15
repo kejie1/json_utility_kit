@@ -10,7 +10,7 @@ relatedToolName: "JSON Validator"
 
 ## What is JSON Validation?
 
-**JSON Validation** is the process of checking if a JSON text strictly complies with standard JSON syntax specification guidelines (RFC 8259). A single out-of-place comma or mismatched bracket will cause standard parsers to crash, breaking downstream frontend interfaces or backend applications.
+**JSON Validation** is the process of checking if a JSON text strictly complies with standard [JSON syntax specifications](/blog/what-is-json). A single out-of-place comma or mismatched bracket will cause standard parsers to crash, breaking downstream frontend interfaces or backend applications.
 
 ---
 
@@ -19,10 +19,10 @@ relatedToolName: "JSON Validator"
 If your application is failing with "Unexpected token..." or similar exceptions, follow this routine:
 
 ### Step 1: Feed It to an Online Validator
-The fastest diagnostic tool is our browser-based [JSON Validator Online](/tools/json-validator). Paste your JSON, and click **Validate**. If it is broken, the engine will extract the character index and line number where the problem lies.
+The fastest diagnostic tool is our browser-based [JSON Validator Online](/tools/json-validator). Paste your JSON, and click **Validate**. If it is broken, the engine will extract the character index and line number where the problem lies. You can also edit and check it interactively inside our [JSON Editor](/tools/json-editor).
 
 ### Step 2: Look for Typical Culprits
-Standard validation failures are almost always caused by one of these three mistakes:
+Standard validation failures are almost always caused by one of these common mistakes. For full descriptions and code examples of these bugs, read our complete guide on [how to fix invalid JSON](/blog/how-to-fix-invalid-json):
 1. **Trailing Commas**: A comma placed after the final array item or object property.
 2. **Invalid Quotes**: Single quotes (`'`) instead of standard double quotes (`"`).
 3. **Mismatched Brackets**: Opening a brace `{` but closing with an array bracket `]`.

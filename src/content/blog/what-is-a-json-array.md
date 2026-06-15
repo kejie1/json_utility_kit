@@ -10,7 +10,7 @@ relatedToolName: "JSON Viewer"
 
 ## Deep Dive: What is a JSON Array?
 
-While JSON objects (`{ }`) are perfect for mapping specific keys to values, **JSON Arrays** are optimized for managing ordered lists of elements. Represented as text wrapped in **square brackets** `[ ]`, a JSON array holds a sequence of values that are indexed starting at `0`.
+While [JSON objects](/blog/what-is-a-json-object) (`{ }`) are perfect for mapping specific keys to values, **JSON Arrays** are optimized for managing ordered lists of elements. Represented as text wrapped in **square brackets** `[ ]`, a JSON array holds a sequence of values that are indexed starting at `0`.
 
 ```json
 ["Astro", "Tailwind", "TypeScript"]
@@ -26,7 +26,7 @@ An array does not contain key/value pairs. Instead, it contains a simple list of
 2. **Numbers**: `[200, 404, 500]`
 3. **Booleans**: `[true, false, true]`
 4. **Nulls**: `[null, null]`
-5. **JSON Objects**: A collection of objects is highly standard for database queries:
+5. **JSON Objects**: A collection of objects is highly standard for database queries. If you have an array of objects that you want to move to spreadsheet software, follow our guide on [how to convert JSON to CSV](/blog/how-to-convert-json-to-csv):
     ```json
     [
       {"name": "Alice", "score": 95},
@@ -43,7 +43,7 @@ Understanding the difference between objects and arrays is vital for drafting co
 
 | Metric | JSON Object (`{ }`) | JSON Array (`[ ]`) |
 | :--- | :--- | :--- |
-| **Structure** | Unordered key-value records | Ordered, indexed sequence |
+| **Structure** | Unordered key-value records (See [JSON Objects](/blog/what-is-a-json-object)) | Ordered, indexed sequence |
 | **Primary Identifier**| Named double-quoted String keys | Numeric indexing (0, 1, 2...) |
 | **Ideal For** | Modelling a single descriptive entity | Holding data matrices or lists of items |
 

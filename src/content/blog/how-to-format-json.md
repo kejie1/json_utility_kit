@@ -10,9 +10,9 @@ relatedToolName: "JSON Formatter"
 
 ## Why Is JSON Formatting Necessary?
 
-When APIs or databases output JSON, they usually strip away all whitespace and line breaks to minimize bandwidth. While this "minified" JSON is optimal for servers, it is practically unreadable for humans.
+When APIs or databases output JSON, they usually strip away all whitespace and line breaks to minimize bandwidth. While this [minified JSON](/blog/json-minify-vs-beautify) is optimal for servers, it is practically unreadable for humans.
 
-**JSON Formatting** (or beautifying) is the process of restoring structure, adding indents (typically 2 or 4 spaces), and organizing brackets onto separate lines so developers can easily review, debug, and read the values.
+**JSON Formatting** (or beautifying) is the process of restoring structure, adding indents (typically 2 or 4 spaces), and organizing brackets onto separate lines so developers can easily review, debug, and read the values. If your formatter crashes, you are likely dealing with some syntax issues; in that case, head over to our guide on [how to validate JSON](/blog/how-to-validate-json) or [how to fix invalid JSON](/blog/how-to-fix-invalid-json).
 
 ---
 
@@ -20,10 +20,10 @@ When APIs or databases output JSON, they usually strip away all whitespace and l
 
 For instant validation and styling, browser tools are the fastest path.
 1. Copy your minified JSON.
-2. Go to [JSON Formatter Online](/tools/json-formatter).
+2. Go to [JSON Formatter Online](/tools/json-formatter) or use our dedicated [JSON Beautifier Online](/tools/json-beautifier).
 3. Paste the text.
 4. Select **2 spaces** or **4 spaces** and click **Format**.
-5. Your formatted data can be copied or downloaded immediately.
+5. Your formatted data can be copied or downloaded immediately. You can also view it in an interactive tree diagram using our [JSON Viewer](/tools/json-viewer).
 
 ---
 

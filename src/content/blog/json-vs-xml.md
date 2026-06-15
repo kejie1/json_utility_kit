@@ -30,9 +30,9 @@ However, with the rise of modern frontend libraries and AJAX in web browsers, **
 
 ## Why JSON Has Dominated Modern APIs
 
-1. **Native JS Mapping**: JSON stands for *JavaScript Object Notation*. The mapping is exact. A browser can parse JSON with a single command (`JSON.parse()`) and immediately utilize it as an active object.
+1. **Native JS Mapping**: JSON stands for *JavaScript Object Notation*. The mapping is exact. A browser can parse JSON with a single command (`JSON.parse()`) and immediately utilize it as an active object. Read more in our introduction to [What Is JSON?](/blog/what-is-json).
 2. **Lightweight Transmission**: It doesn't require repeating closing tags (like `</username>`), which saves massive overhead on large batches of records.
-3. **Structured Array Support**: Arrays are natively supported as `[]`. In XML, lists must be simulated using repeated nested child elements.
+3. **Structured Array Support**: Arrays are natively supported as `[]`. In XML, lists must be simulated using repeated nested child elements. For more information, check our detailed guide on [JSON Arrays](/blog/what-is-a-json-array).
 
 ---
 

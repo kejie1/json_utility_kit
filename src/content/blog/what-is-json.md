@@ -10,7 +10,7 @@ relatedToolName: "JSON Viewer"
 
 ## Introduction to JSON
 
-**JSON**, which stands for **JavaScript Object Notation**, is a lightweight data-interchange format. It is easy for humans to read and write, and it is easy for machines to parse and generate. Originally popularized by Douglas Crockford in the early 2000s, JSON has become the de facto standard for transmitting data in web APIs, replacing XML in almost all modern applications.
+**JSON**, which stands for **JavaScript Object Notation**, is a lightweight data-interchange format. It is easy for humans to read and write, and it is easy for machines to parse and generate. Originally popularized by Douglas Crockford in the early 2000s, JSON has become the de facto standard for transmitting data in web APIs, replacing [XML](/blog/json-vs-xml) in almost all modern applications.
 
 Despite having "JavaScript" in its name, JSON is completely language-independent. Most modern programming languages have robust built-in support for parsing and writing JSON data.
 
@@ -19,15 +19,15 @@ Despite having "JavaScript" in its name, JSON is completely language-independent
 ## JSON Syntax Rules
 
 JSON is built on two primary structures:
-1. **A collection of name/value pairs** (commonly realized as an object, dictionary, or hash table).
-2. **An ordered list of values** (realized as an array, list, or vector).
+1. **A collection of name/value pairs** (commonly realized as a [JSON Object](/blog/what-is-a-json-object), dictionary, or hash table).
+2. **An ordered list of values** (realized as a [JSON Array](/blog/what-is-a-json-array), list, or vector).
 
 ### Core Syntax Constraints
 - Data is represented in key/value pairs.
 - Keys must always be wrapped in **double quotes** (e.g., `"name": "Alice"`).
 - Values must be one of the six valid data types (see below).
 - Key/value pairs are separated by commas.
-- No trailing commas are allowed at the end of objects or arrays.
+- No trailing commas are allowed at the end of objects or arrays. If you run into formatting issues, check our guide on [how to fix invalid JSON](/blog/how-to-fix-invalid-json).
 
 ---
 
@@ -39,8 +39,8 @@ A JSON value can only be one of the following:
 | :--- | :--- | :--- |
 | **String** | Wrapped in double quotes, supports unicode characters. | `"Hello World"` |
 | **Number** | Double-precision floating-point format (no octal or hexadecimal). | `42` or `-3.14` |
-| **Object** | An unordered collection of key/value pairs enclosed in `{}`. | `{"id": 1}` |
-| **Array** | An ordered collection of values enclosed in `[]`. | `[1, 2, "three"]` |
+| **Object** | An unordered collection of key/value pairs enclosed in `{}`. Learn more about [JSON Objects](/blog/what-is-a-json-object). | `{"id": 1}` |
+| **Array** | An ordered collection of values enclosed in `[]`. Learn more about [JSON Arrays](/blog/what-is-a-json-array). | `[1, 2, "three"]` |
 | **Boolean** | Lowercase logical values. | `true` or `false` |
 | **Null** | Represents an empty or non-existent value. | `null` |
 
