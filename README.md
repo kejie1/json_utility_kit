@@ -2,6 +2,8 @@
 
 A fast, private, browser-based JSON toolkit for formatting, validating, viewing, editing, minifying, and converting JSON data. Built with modern web standards to ensure complete client-side data privacy.
 
+👉 **Live Website**: [https://jsonutilitykit.com/](https://jsonutilitykit.com/)
+
 [English](./README.md) | [简体中文](./README_ZH.md)
 
 ---
