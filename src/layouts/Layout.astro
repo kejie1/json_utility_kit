@@ -1,6 +1,6 @@
 ---
-import Header from '../components/Header.astro';
-import Footer from '../components/Footer.astro';
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
 
 interface Props {
   title: string;
@@ -10,11 +10,12 @@ interface Props {
 
 const { title, description, canonicalUrl } = Astro.props;
 
-const fallbackUrl = new URL(Astro.url.pathname, 'https://jsonutilitykit.com').href;
+const fallbackUrl = new URL(Astro.url.pathname, "https://jsonutilitykit.com")
+  .href;
 const finalCanonicalUrl = canonicalUrl || fallbackUrl;
 ---
 
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en" class="h-full">
   <head>
     <meta charset="UTF-8" />
@@ -41,20 +42,35 @@ const finalCanonicalUrl = canonicalUrl || fallbackUrl;
     <meta property="twitter:title" content={title} />
     <meta property="twitter:description" content={description} />
 
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-KGSD18MBEB"
+    ></script>
+    <script is:inline>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+
+      gtag("config", "G-KGSD18MBEB");
+    </script>
+
     <!-- Prevent Dark Mode Flicker -->
     <script is:inline>
       if (
-        localStorage.getItem('color-theme') === 'dark' ||
-        (!('color-theme' in localStorage) &&
-          window.matchMedia('(prefers-color-scheme: dark)').matches)
+        localStorage.getItem("color-theme") === "dark" ||
+        (!("color-theme" in localStorage) &&
+          window.matchMedia("(prefers-color-scheme: dark)").matches)
       ) {
-        document.documentElement.classList.add('dark');
+        document.documentElement.classList.add("dark");
       } else {
-        document.documentElement.classList.remove('dark');
+        document.documentElement.classList.remove("dark");
       }
     </script>
   </head>
-  <body class="flex min-h-full flex-col bg-gray-50 text-gray-900 transition-colors duration-200 dark:bg-gray-950 dark:text-gray-100">
+  <body
+    class="flex min-h-full flex-col bg-gray-50 text-gray-900 transition-colors duration-200 dark:bg-gray-950 dark:text-gray-100"
+  >
     <Header />
     <main class="flex-grow">
       <slot />
