@@ -1,0 +1,94 @@
+# JSON Utility Kit
+
+> A fast, private, browser-based JSON toolkit for formatting, validating, viewing, editing, minifying, and converting JSON and CSV data.
+
+This site operates 100% on the client-side. No data is ever transmitted to external servers, ensuring absolute privacy and security for system configs, database dumps, and API payloads.
+
+- **URL**: https://jsonutilitykit.com/
+- **Privacy Model**: Zero-server execution. Offline-first.
+- **Tech Stack**: Astro, TypeScript, Tailwind CSS.
+
+---
+
+## 🛠️ Interactive Tools
+
+The following functional endpoints are available for processing JSON and CSV datasets:
+
+### JSON Formatter
+- **Route**: `/tools/json-formatter`
+- **Purpose**: Parsed unreadable JSON configurations and outputs beautifully indented code.
+- **Options**: Indent sizes of 2 spaces, 4 spaces, or Tab characters. Copy & download support.
+
+### JSON Validator
+- **Route**: `/tools/json-validator`
+- **Purpose**: Audits raw strings against RFC 8259 syntax specifications.
+- **Features**: Outputs clear error reasons, including line numbers and character offsets for quick debugging.
+
+### JSON Beautifier
+- **Route**: `/tools/json-beautifier`
+- **Purpose**: Simplifies pretty-printing dense or single-line JSON structures.
+
+### JSON Viewer
+- **Route**: `/tools/json-viewer`
+- **Purpose**: Renders flat JSON text into an interactive, expandable, and searchable folder tree.
+- **Features**: Supports expand/collapse all, real-time key/value regex searches, and hovering to copy precise JSON property access paths.
+
+### JSON Minifier
+- **Route**: `/tools/json-minifier`
+- **Purpose**: Strips all unnecessary whitespaces and line breaks from files for production compression.
+- **Statistics**: Shows original size, compressed size, and saved space ratio.
+
+### JSON Editor
+- **Route**: `/tools/json-editor`
+- **Purpose**: Edit JSON models directly with interactive controls.
+- **Features**: Real-time syntax tracking and the ability to sort object keys alphabetically (A-Z).
+
+### JSON to CSV
+- **Route**: `/tools/json-to-csv`
+- **Purpose**: Flattens structured collections (arrays of objects) into spreadsheet-ready CSV grids.
+- **Features**: Configurable separators (Comma, Semicolon, Tab) and double-quoted safety wrappers.
+
+### CSV to JSON
+- **Route**: `/tools/csv-to-json`
+- **Purpose**: Transforms delimited tabular data back into structured JSON arrays of objects.
+- **Specs**: Complies with RFC 4180 parsing status machines; supports optional number/boolean type-casting.
+
+---
+
+## 📖 Key Documentation & Developer Guides
+
+High-quality developer references containing code samples, CLI instructions, and specifications:
+
+### Core Formats
+- `/blog/what-is-json` - Introduction to JSON syntax rules and valid data primitives.
+- `/blog/json-object-vs-json-array` - Comparative analysis of objects vs. sequential array lists.
+- `/blog/what-is-a-json-object` - Rules of curly brace definitions and mandatory double-quoting keys.
+- `/blog/what-is-a-json-array` - Deep dive into array indexing, bracket structures, and mixed-type rules.
+- `/blog/json-vs-xml` - Modern comparisons on mapping, speed, parsing complexity, and transmission overhead.
+
+### Formatting & Compression
+- `/blog/how-to-format-json` - Complete guide on pretty printing inside browsers, editors (VS Code), and CLI (`jq`).
+- `/blog/json-pretty-print-explained` - Technical explanation of how computer parsers process whitespace serialization.
+- `/blog/how-to-minify-json-for-production` - How lossless minification reduces network latency and bandwidth costs.
+
+### Validation & Troubleshooting
+- `/blog/how-to-validate-json` - Walkthrough on syntax checking using JS `try/catch` and online engines.
+- `/blog/how-to-fix-invalid-json` - Practical solutions for trailing commas, single quotes, and missing brackets.
+- `/blog/why-is-my-json-invalid` - Quick diagnostic checklists for runtime token errors.
+- `/blog/how-to-escape-quotes-in-json` - How to write strings containing quotes, backslashes, and carriage returns.
+
+### Integrations & Conversions
+- `/blog/how-to-convert-json-to-csv` - How flat key-headers and data columns map to Excel and Google Sheets.
+- `/blog/how-to-convert-csv-to-json` - Writing pure JavaScript state machines to split rows without breaking on cell commas.
+- `/blog/how-to-read-a-json-file-online-safely` - Tips on inspecting database dumps without cloud storage leaks.
+- `/blog/how-to-view-json-as-a-tree` - Techniques for rendering collapsed, searchable nested structures.
+- `/blog/how-to-debug-api-json-responses` - Browser network tab tips, header tracking, and JavaScript logging methods.
+- `/blog/json-for-rest-apis` - Best practices for API development: consistent camelCase keys and clean error wrapping.
+
+---
+
+## 📜 Metadata & Legal
+- **About**: `/about` - Core mission statement emphasizing 100% browser isolation.
+- **Contact**: `/contact` - Official channels for developers feedback and bug reports.
+- **Privacy Policy**: `/privacy-policy` - Explicit guarantee of local computations and ad cookie transparency.
+- **Terms of Service**: `/terms` - Provided as-is; data management guidelines.
