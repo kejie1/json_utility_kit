@@ -5,6 +5,7 @@
 This site operates 100% on the client-side. No data is ever transmitted to external servers, ensuring absolute privacy and security for system configs, database dumps, and API payloads.
 
 - **URL**: https://jsonutilitykit.com/
+- **Source Repository**: https://github.com/kejie1/json_utility_kit
 - **Privacy Model**: Zero-server execution. Offline-first.
 - **Tech Stack**: Astro, TypeScript, Tailwind CSS.
 
@@ -90,5 +91,6 @@ High-quality developer references containing code samples, CLI instructions, and
 ## 📜 Metadata & Legal
 - **About**: `/about` - Core mission statement emphasizing 100% browser isolation.
 - **Contact**: `/contact` - Official channels for developers feedback and bug reports.
+- **Source Repository**: `https://github.com/kejie1/json_utility_kit` - Public codebase for implementation review.
 - **Privacy Policy**: `/privacy-policy` - Explicit guarantee of local computations and ad cookie transparency.
 - **Terms of Service**: `/terms` - Provided as-is; data management guidelines.
