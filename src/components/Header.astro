@@ -1,4 +1,6 @@
 ---
+import GitHubIcon from "./GitHubIcon.astro";
+
 const currentPath = Astro.url.pathname;
 
 const tools = [
@@ -59,8 +61,9 @@ const tools = [
           href="https://github.com/kejie1/json_utility_kit"
           target="_blank"
           rel="noopener noreferrer"
-          class="text-sm font-medium text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
+          class="inline-flex items-center gap-1.5 text-sm font-medium text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
         >
+          <GitHubIcon />
           GitHub
         </a>
       </nav>
@@ -129,8 +132,9 @@ const tools = [
         href="https://github.com/kejie1/json_utility_kit"
         target="_blank"
         rel="noopener noreferrer"
-        class="block rounded-md px-3 py-2 text-base font-medium text-gray-600 hover:bg-gray-50 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-gray-800 dark:hover:text-white"
+        class="flex items-center gap-2 rounded-md px-3 py-2 text-base font-medium text-gray-600 hover:bg-gray-50 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-gray-800 dark:hover:text-white"
       >
+        <GitHubIcon />
         GitHub
       </a>
     </div>
