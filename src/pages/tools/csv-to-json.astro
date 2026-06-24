@@ -3,6 +3,10 @@ import ToolLayout from "../../layouts/ToolLayout.astro";
 
 const faqs = [
     {
+        question: "What is the fastest way to convert CSV to JSON online?",
+        answer: "Paste your CSV into the input box, keep the first row as headers, click Convert CSV to JSON, then copy or download the JSON array. The converter works in your browser, so it is suitable for quick spreadsheet exports, API examples, and JavaScript test data.",
+    },
+    {
         question: "How does the CSV to JSON parser handle quotes and commas?",
         answer: "Our converter implements standard RFC 4180 parser compliance. It properly tracks double-quoted fields, allowing cells to contain internal commas, tabs, semicolons, and even newlines without corrupting the layout.",
     },
@@ -21,9 +25,9 @@ const faqs = [
 ];
 
 const howToUseSteps = [
-    "Paste your raw comma-separated CSV text into the input column.",
-    "Choose your source delimiter (e.g., standard Comma or Tab separated) and whether to auto-detect data types.",
-    'Click "Convert to JSON". You will get a clean, validated JSON array of objects.',
+    "Paste CSV rows from Excel, Google Sheets, a database export, or a report file into the input column.",
+    "Choose the delimiter, keep the header row as JSON keys, and decide whether numbers and booleans should be parsed as real JSON values.",
+    'Click "Convert CSV to JSON" to generate a clean JSON array, then copy or download the result.',
 ];
 
 const relatedArticles = [
@@ -59,10 +63,10 @@ const relatedArticles = [
 ---
 
 <ToolLayout
-    title="CSV to JSON Converter Online - Import CSV to JSON"
-    description="Parse CSV spreadsheet files and export them as clean JSON arrays. Automatically handles headers, quotes, and commas safely in your browser."
-    h1="CSV to JSON Converter"
-    shortDescription="Instantly parse your flat CSV tables or copy-pasted Excel blocks and output them as beautifully formatted, structured JSON arrays."
+    title="CSV to JSON Converter Online - Export CSV to JSON"
+    description="Convert CSV to JSON online for free. Paste spreadsheet rows, parse headers, quotes, commas, tabs, numbers, and booleans, then copy or download a JSON array."
+    h1="CSV to JSON Converter Online"
+    shortDescription="Export CSV to JSON directly in your browser. Paste rows from Excel, Google Sheets, or database exports and convert them into clean JSON arrays without uploading files."
     toolHref="/tools/csv-to-json"
     faqs={faqs}
     howToUseSteps={howToUseSteps}
@@ -78,7 +82,7 @@ const relatedArticles = [
                     for="csv-input"
                     class="text-sm font-semibold text-gray-700 dark:text-gray-300"
                 >
-                    Raw CSV Spreadsheet Input
+                    CSV Input: spreadsheet rows, headers, quotes, and commas
                 </label>
                 <div class="flex gap-2">
                     <button
@@ -113,7 +117,7 @@ const relatedArticles = [
                     for="json-output"
                     class="text-sm font-semibold text-gray-700 dark:text-gray-300"
                 >
-                    Resulting JSON Array
+                    JSON Output: array of objects
                 </label>
                 <div class="flex items-center gap-2">
                     <button
@@ -167,7 +171,7 @@ const relatedArticles = [
                     checked
                     class="h-4 w-4 rounded border-gray-300 text-brand-600 focus:ring-brand-500 dark:border-gray-800 dark:bg-gray-950"
                 />
-                <span
+            <span
                     class="text-sm font-medium text-gray-700 dark:text-gray-300"
                     >Parse Numbers & Booleans</span
                 >
@@ -190,7 +194,7 @@ const relatedArticles = [
                     stroke-linejoin="round"
                     d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"></path>
             </svg>
-            Convert to JSON
+            Convert CSV to JSON
         </button>
     </div>
 
@@ -210,10 +214,10 @@ const relatedArticles = [
                 id="csv-json-workflows"
                 class="text-xl font-bold text-gray-900 dark:text-white"
             >
-                CSV to JSON workflows developers use every day
+                Export CSV to JSON for spreadsheets, APIs, and JavaScript
             </h2>
             <p class="mt-3 text-sm leading-6 text-gray-600 dark:text-gray-300">
-                This converter is designed for practical export CSV to JSON
+                This CSV to JSON converter is designed for practical export
                 tasks: moving spreadsheet rows into JavaScript arrays, turning
                 database CSV exports into mock API data, and connecting CSV data
                 to JSON-based tools without sending private files to a server.
@@ -265,7 +269,7 @@ const relatedArticles = [
             class="rounded-2xl border border-brand-200 bg-brand-50 p-6 shadow-sm dark:border-brand-900/40 dark:bg-brand-950/20"
         >
             <h2 class="text-base font-bold text-brand-900 dark:text-brand-200">
-                Common search tasks supported
+                Common CSV to JSON tasks
             </h2>
             <ul class="mt-4 space-y-3 text-sm leading-6 text-brand-900 dark:text-brand-200">
                 <li>Export CSV to JSON online</li>
@@ -318,7 +322,7 @@ const relatedArticles = [
                 "mt-6 rounded-xl p-4 border border-brand-200 bg-brand-50 text-brand-800 dark:border-brand-900/30 dark:bg-brand-950/20 dark:text-brand-400";
             feedbackPanel.innerHTML = `<span class="font-semibold text-sm">${message}</span>`;
         } else {
-            feedbackPanel.className =
+        feedbackPanel.className =
                 "mt-6 rounded-xl p-4 border border-red-200 bg-red-50 text-red-800 dark:border-red-900/30 dark:bg-red-950/20 dark:text-red-400";
             feedbackPanel.innerHTML = `<div><span class="font-semibold text-sm block">Parser Failure</span><span class="text-xs font-mono mt-1 block">${message}</span></div>`;
         }
@@ -430,7 +434,7 @@ const relatedArticles = [
             jsonOutput.value = JSON.stringify(result, null, 2);
             updateFeedback(
                 "success",
-                `CSV successfully parsed! Processed ${result.length} objects into an array.`,
+                `CSV converted to JSON successfully. Processed ${result.length} rows into a JSON array.`,
             );
         } catch (e: any) {
             updateFeedback(

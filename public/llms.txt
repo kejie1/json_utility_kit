@@ -51,8 +51,8 @@ The following functional endpoints are available for processing JSON and CSV dat
 
 ### CSV to JSON
 - **Route**: `/tools/csv-to-json`
-- **Purpose**: Transforms delimited tabular data back into structured JSON arrays of objects.
-- **Specs**: Complies with RFC 4180 parsing status machines; supports optional number/boolean type-casting.
+- **Purpose**: Converts CSV to JSON online by transforming spreadsheet rows, database exports, or copied table data into structured JSON arrays of objects.
+- **Specs**: Handles headers, quoted cells, commas, semicolons, tabs, escaped quotes, and optional number/boolean type-casting in the browser without file uploads.
 
 ---
 
