@@ -51,8 +51,8 @@ The following functional endpoints are available for processing JSON and CSV dat
 
 ### CSV to JSON
 - **Route**: `/tools/csv-to-json`
-- **Purpose**: Converts CSV to JSON online by transforming spreadsheet rows, database exports, or copied table data into structured JSON arrays of objects.
-- **Specs**: Handles headers, quoted cells, commas, semicolons, tabs, escaped quotes, and optional number/boolean type-casting in the browser without file uploads.
+- **Purpose**: Converts CSV to JSON online by transforming spreadsheet rows, database exports, or copied table data into flat or nested JSON arrays of objects.
+- **Specs**: Handles headers, quoted cells, commas, semicolons, tabs, escaped quotes, optional number/boolean type-casting, and optional nested JSON output from dotted or bracket-style headers such as `user.name` and `items[0].sku` in the browser without file uploads.
 
 ---
 

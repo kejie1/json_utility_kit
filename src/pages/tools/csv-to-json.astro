@@ -15,6 +15,10 @@ const faqs = [
         answer: 'Yes! By default, the tool will attempt to parse numbers (like "42") and booleans (like "true") into native JSON types rather than plain strings, unless disabled.',
     },
     {
+        question: "How does CSV to JSON handle nested JSON structures?",
+        answer: 'By default, CSV rows are converted into flat JSON objects. Turn on "Nested JSON from headers" to interpret dotted and bracket-style headers such as "user.name", "address.city", and "items[0].sku" as nested objects and arrays.',
+    },
+    {
         question: "Can I export CSV to JSON without uploading a file?",
         answer: "Yes. Paste CSV text copied from Excel, Google Sheets, database exports, or log reports, then export the result as a JSON array. The conversion runs in your browser, so your CSV content is not uploaded.",
     },
@@ -26,7 +30,7 @@ const faqs = [
 
 const howToUseSteps = [
     "Paste CSV rows from Excel, Google Sheets, a database export, or a report file into the input column.",
-    "Choose the delimiter, keep the header row as JSON keys, and decide whether numbers and booleans should be parsed as real JSON values.",
+    "Choose the delimiter, keep the header row as JSON keys, and optionally turn dotted headers into nested JSON objects.",
     'Click "Convert CSV to JSON" to generate a clean JSON array, then copy or download the result.',
 ];
 
@@ -176,6 +180,19 @@ const relatedArticles = [
                     >Parse Numbers & Booleans</span
                 >
             </label>
+            <label
+                class="inline-flex items-center gap-2 cursor-pointer select-none"
+            >
+                <input
+                    id="nested-headers"
+                    type="checkbox"
+                    class="h-4 w-4 rounded border-gray-300 text-brand-600 focus:ring-brand-500 dark:border-gray-800 dark:bg-gray-950"
+                />
+                <span
+                    class="text-sm font-medium text-gray-700 dark:text-gray-300"
+                    >Nested JSON from headers</span
+                >
+            </label>
         </div>
 
         <button
@@ -302,12 +319,19 @@ const relatedArticles = [
     const btnDownload = document.getElementById("btn-download");
     const btnConvert = document.getElementById("btn-convert");
     const feedbackPanel = document.getElementById("feedback-panel");
+    const nestedHeadersCheckbox = document.getElementById(
+        "nested-headers",
+    ) as HTMLInputElement;
 
-    const csvExample = `id,name,role,is_active,rating
+    const flatCsvExample = `id,name,role,is_active,rating
 1,"George Washington",President,false,4.9
 2,"Abraham Lincoln",President,true,5.0
 3,"Thomas Jefferson",Statesman,false,4.7
 4,"Benjamin Franklin",Inventor,false,4.8`;
+
+    const nestedCsvExample = `id,user.name,user.role,user.active,address.city,items[0].sku,items[0].qty
+1,"George Washington",President,false,"New York",BOOK-001,2
+2,"Abraham Lincoln",President,true,"Springfield",PEN-009,5`;
 
     function updateFeedback(type: "success" | "error" | "clear", message = "") {
         if (!feedbackPanel) return;
@@ -368,6 +392,69 @@ const relatedArticles = [
         return lines;
     }
 
+    function castCellValue(cellVal: string, castTypes: boolean) {
+        if (!castTypes) return cellVal;
+
+        if (cellVal.toLowerCase() === "true") {
+            return true;
+        }
+        if (cellVal.toLowerCase() === "false") {
+            return false;
+        }
+        if (cellVal === "") {
+            return null;
+        }
+        if (!isNaN(Number(cellVal))) {
+            return Number(cellVal);
+        }
+        return cellVal;
+    }
+
+    function parseHeaderPath(header: string): Array<string | number> {
+        const parts: Array<string | number> = [];
+
+        header.split(".").forEach((segment) => {
+            const matcher = /([^\[\]]+)|\[(\d+)\]/g;
+            let match: RegExpExecArray | null;
+            while ((match = matcher.exec(segment)) !== null) {
+                if (match[1]) {
+                    parts.push(match[1]);
+                } else if (match[2]) {
+                    parts.push(Number(match[2]));
+                }
+            }
+        });
+
+        return parts.length ? parts : [header];
+    }
+
+    function setNestedValue(
+        target: Record<string, any>,
+        path: Array<string | number>,
+        value: unknown,
+    ) {
+        let current: any = target;
+
+        path.forEach((key, index) => {
+            const isLast = index === path.length - 1;
+            if (isLast) {
+                current[key] = value;
+                return;
+            }
+
+            const nextKey = path[index + 1];
+            if (
+                current[key] === undefined ||
+                current[key] === null ||
+                typeof current[key] !== "object"
+            ) {
+                current[key] = typeof nextKey === "number" ? [] : {};
+            }
+
+            current = current[key];
+        });
+    }
+
     function convertCSVToJSON() {
         const csvVal = csvInput.value.trim();
         if (!csvVal) {
@@ -394,6 +481,7 @@ const relatedArticles = [
             const headers = parsedRows[0].map((h) => h.trim());
             const dataRows = parsedRows.slice(1);
             const castTypes = typeCastCheckbox.checked;
+            const useNestedHeaders = nestedHeadersCheckbox.checked;
 
             const result: any[] = [];
 
@@ -410,21 +498,11 @@ const relatedArticles = [
                         cellVal = cellVal.trim();
                     }
 
-                    if (castTypes) {
-                        // Check if boolean
-                        if (cellVal.toLowerCase() === "true") {
-                            obj[header] = true;
-                        } else if (cellVal.toLowerCase() === "false") {
-                            obj[header] = false;
-                        } else if (cellVal === "") {
-                            obj[header] = null;
-                        } else if (!isNaN(Number(cellVal))) {
-                            obj[header] = Number(cellVal);
-                        } else {
-                            obj[header] = cellVal;
-                        }
+                    const value = castCellValue(cellVal, castTypes);
+                    if (useNestedHeaders) {
+                        setNestedValue(obj, parseHeaderPath(header), value);
                     } else {
-                        obj[header] = cellVal;
+                        obj[header] = value;
                     }
                 });
 
@@ -434,7 +512,7 @@ const relatedArticles = [
             jsonOutput.value = JSON.stringify(result, null, 2);
             updateFeedback(
                 "success",
-                `CSV converted to JSON successfully. Processed ${result.length} rows into a JSON array.`,
+                `CSV converted to JSON successfully. Processed ${result.length} rows into a ${useNestedHeaders ? "nested " : ""}JSON array.`,
             );
         } catch (e: any) {
             updateFeedback(
@@ -446,7 +524,9 @@ const relatedArticles = [
 
     // Bindings
     btnExample?.addEventListener("click", () => {
-        csvInput.value = csvExample;
+        csvInput.value = nestedHeadersCheckbox.checked
+            ? nestedCsvExample
+            : flatCsvExample;
         updateFeedback("clear");
         convertCSVToJSON();
     });
