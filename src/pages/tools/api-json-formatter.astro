@@ -1,0 +1,44 @@
+---
+import Layout from '../../layouts/Layout.astro';
+---
+
+<Layout
+  title="API JSON Formatter for Debugging Responses"
+  description="Format and inspect API JSON responses in the browser. A developer workflow for debugging REST APIs, webhooks, and copied response bodies safely."
+>
+  <main class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <nav class="mb-8 text-sm text-gray-500 dark:text-gray-400">
+      <a href="/" class="hover:text-brand-600">Home</a>
+      <span class="mx-2">/</span>
+      <span>API JSON Formatter</span>
+    </nav>
+
+    <section class="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-800 dark:bg-gray-900 sm:p-8">
+      <p class="text-sm font-bold uppercase tracking-wide text-brand-600 dark:text-brand-400">API debugging</p>
+      <h1 class="mt-3 text-3xl font-extrabold tracking-tight text-gray-900 dark:text-white sm:text-4xl">
+        API JSON Formatter for Developers
+      </h1>
+      <p class="mt-4 max-w-3xl text-base leading-7 text-gray-600 dark:text-gray-400">
+        Paste a copied REST API response, webhook payload, or log output into a local JSON formatter to make nested fields readable without uploading sensitive data.
+      </p>
+      <div class="mt-6 flex flex-wrap gap-3">
+        <a href="/tools/json-formatter" class="rounded-xl bg-brand-600 px-5 py-3 text-sm font-bold text-white hover:bg-brand-700">Format API JSON</a>
+        <a href="/tools/json-validator" class="rounded-xl border border-gray-200 px-5 py-3 text-sm font-bold text-gray-700 hover:bg-gray-50 dark:border-gray-800 dark:text-gray-300 dark:hover:bg-gray-800">Validate Response Body</a>
+      </div>
+    </section>
+
+    <section class="mt-10 rounded-2xl border border-gray-200 bg-white p-6 dark:border-gray-800 dark:bg-gray-900 sm:p-8">
+      <h2 class="text-2xl font-bold text-gray-900 dark:text-white">When this workflow helps</h2>
+      <div class="mt-6 grid gap-5 md:grid-cols-2">
+        <div class="rounded-xl bg-gray-50 p-5 dark:bg-gray-950">
+          <h3 class="font-bold text-gray-900 dark:text-white">Webhook payload review</h3>
+          <p class="mt-2 text-sm leading-6 text-gray-600 dark:text-gray-400">Format copied webhook samples before checking event types, object IDs, timestamps, and nested metadata.</p>
+        </div>
+        <div class="rounded-xl bg-gray-50 p-5 dark:bg-gray-950">
+          <h3 class="font-bold text-gray-900 dark:text-white">REST API response debugging</h3>
+          <p class="mt-2 text-sm leading-6 text-gray-600 dark:text-gray-400">Beautify minified response bodies from browser devtools, Postman, curl, or server logs.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+</Layout>

@@ -1,0 +1,45 @@
+---
+import Layout from '../../layouts/Layout.astro';
+---
+
+<Layout
+  title="JSON Array to CSV Export Workflow"
+  description="Convert JSON arrays to CSV for spreadsheets, reporting, and developer handoffs. Learn what to check before exporting nested JSON data."
+>
+  <main class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <nav class="mb-8 text-sm text-gray-500 dark:text-gray-400">
+      <a href="/" class="hover:text-brand-600">Home</a>
+      <span class="mx-2">/</span>
+      <span>JSON Array to CSV</span>
+    </nav>
+
+    <section class="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-800 dark:bg-gray-900 sm:p-8">
+      <p class="text-sm font-bold uppercase tracking-wide text-brand-600 dark:text-brand-400">Data export</p>
+      <h1 class="mt-3 text-3xl font-extrabold tracking-tight text-gray-900 dark:text-white sm:text-4xl">
+        JSON Array to CSV Export Workflow
+      </h1>
+      <p class="mt-4 max-w-3xl text-base leading-7 text-gray-600 dark:text-gray-400">
+        Export JSON arrays into CSV when you need spreadsheet review, QA handoff, import templates, or a quick report from API data.
+      </p>
+      <div class="mt-6 flex flex-wrap gap-3">
+        <a href="/tools/json-to-csv" class="rounded-xl bg-brand-600 px-5 py-3 text-sm font-bold text-white hover:bg-brand-700">Open JSON to CSV Converter</a>
+        <a href="/tools/json-viewer" class="rounded-xl border border-gray-200 px-5 py-3 text-sm font-bold text-gray-700 hover:bg-gray-50 dark:border-gray-800 dark:text-gray-300 dark:hover:bg-gray-800">Inspect JSON First</a>
+      </div>
+    </section>
+
+    <section class="mt-10 grid gap-6 md:grid-cols-3">
+      <article class="rounded-2xl border border-gray-200 bg-white p-6 dark:border-gray-800 dark:bg-gray-900">
+        <h2 class="text-lg font-bold text-gray-900 dark:text-white">Flat arrays work best</h2>
+        <p class="mt-2 text-sm leading-6 text-gray-600 dark:text-gray-400">A list of objects with the same keys exports cleanly into columns.</p>
+      </article>
+      <article class="rounded-2xl border border-gray-200 bg-white p-6 dark:border-gray-800 dark:bg-gray-900">
+        <h2 class="text-lg font-bold text-gray-900 dark:text-white">Nested values need review</h2>
+        <p class="mt-2 text-sm leading-6 text-gray-600 dark:text-gray-400">Nested objects and arrays may need flattening before they become useful spreadsheet fields.</p>
+      </article>
+      <article class="rounded-2xl border border-gray-200 bg-white p-6 dark:border-gray-800 dark:bg-gray-900">
+        <h2 class="text-lg font-bold text-gray-900 dark:text-white">Validate before sharing</h2>
+        <p class="mt-2 text-sm leading-6 text-gray-600 dark:text-gray-400">Check the JSON structure before exporting so broken rows do not become confusing CSV columns.</p>
+      </article>
+    </section>
+  </main>
+</Layout>
