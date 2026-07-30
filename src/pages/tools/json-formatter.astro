@@ -222,8 +222,9 @@ const relatedArticles = [
       const parsed = JSON.parse(rawVal);
       const indent = getIndentValue();
       const formatted = JSON.stringify(parsed, null, indent);
-      jsonOutput.value = formatted;
-      updateFeedback('success', 'Valid JSON format and beautified successfully.');
+    jsonOutput.value = formatted;
+    updateFeedback('success', 'Valid JSON format and beautified successfully.');
+    window.trackToolEvent?.('tool_run', { tool_name: 'json_formatter' });
     } catch (e: any) {
       updateFeedback('error', e.message);
     }
@@ -247,7 +248,8 @@ const relatedArticles = [
   btnCopy?.addEventListener('click', () => {
     const outputText = jsonOutput.value;
     if (!outputText) return;
-    navigator.clipboard.writeText(outputText).then(() => {
+  navigator.clipboard.writeText(outputText).then(() => {
+    window.trackToolEvent?.('tool_copy', { tool_name: 'json_formatter' });
       const originalText = btnCopy.innerHTML;
       btnCopy.innerHTML = `
         <svg class="h-3.5 w-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
@@ -272,6 +274,7 @@ const relatedArticles = [
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-  });
+  URL.revokeObjectURL(url);
+  window.trackToolEvent?.('tool_download', { tool_name: 'json_formatter', file_type: 'json' });
+});
 </script>
